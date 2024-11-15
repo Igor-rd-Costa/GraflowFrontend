@@ -48,26 +48,6 @@ main {
       display: grid;
       row-gap: 1rem;
       column-gap: 2rem;
-
-      button {
-        height: 2.5rem;
-        padding-left: 0.5rem;
-        padding-right: 0.5rem;
-        background-color: var(--mainColor);
-        border: none;
-        border-radius: 0.2rem;
-        box-shadow: 2px 2px 4px -2px black;
-        font-weight: 600;
-      }
-
-      button:disabled {
-        background-color: #555555FF;
-      }
-
-      button:hover:not(:disabled) {
-        background-color: var(--mainColorLight);
-      } 
-
     }
   }
   

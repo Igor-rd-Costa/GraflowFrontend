@@ -5,19 +5,19 @@
     <form method="post" [formGroup]="registerForm" (submit)="Register($event)">
       <Heading>Register</Heading>
       <div>
-        <label for="username">Username</label>
-        <input name="username" [formControl]="registerForm.controls.username">
+        <label  class="main" for="username">Username</label>
+        <input  class="main" name="username" [formControl]="registerForm.controls.username">
       </div>
       <div>
-        <label for="email">Email</label>
-        <input name="email" [formControl]="registerForm.controls.email">
+        <label  class="main" for="email">Email</label>
+        <input  class="main" name="email" [formControl]="registerForm.controls.email">
       </div>
       <div>
-        <label for="password">Password</label>
-        <input type="password" name="password" [formControl]="registerForm.controls.password">
+        <label  class="main" for="password">Password</label>
+        <input  class="main" type="password" name="password" [formControl]="registerForm.controls.password">
       </div>
       <div>
-        <button type="submit" [disabled]="!registerForm.valid">
+        <button type="submit" class="main" [disabled]="!registerForm.valid">
           Register
         </button>
       </div>

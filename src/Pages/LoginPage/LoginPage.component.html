@@ -5,18 +5,18 @@
     <form method="post" [formGroup]="loginForm" (submit)="Login($event)">
       <Heading>Login</Heading>
       <div>
-        <label for="username">Username</label>
-        <input name="username" [formControl]="loginForm.controls.username">
+        <label  class="main" for="username">Username</label>
+        <input  class="main" name="username" [formControl]="loginForm.controls.username">
       </div>
       <div>
-        <label for="password">Password</label>
-        <input type="password" name="password" [formControl]="loginForm.controls.password">
+        <label  class="main" for="password">Password</label>
+        <input  class="main" type="password" name="password" [formControl]="loginForm.controls.password">
       </div>
       <div>
-        <button type="submit" [disabled]="!loginForm.valid">
+        <button type="submit" class="main" [disabled]="!loginForm.valid">
           Login
         </button>
-        <button type="button" (click)="GoToRegisterPage()">
+        <button type="button" class="main" (click)="GoToRegisterPage()">
           Register
         </button>
       </div>

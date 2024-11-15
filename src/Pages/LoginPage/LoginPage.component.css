@@ -10,33 +10,17 @@ main {
     height: fit-content;
     padding: 1rem;
     border-radius: 0.5rem;
-    background-color: var(--secondaryColor);
+    background-color: var(--formBackgroundColor);
     display: grid;
     row-gap: 1rem;
     grid-template-rows: 2rem auto auto 1fr;
     justify-items: center;
+    box-shadow: 2px 2px 4px -2px black;
 
     div {
       display: grid;
       row-gap: 0.2rem;
       width: 100%;
-
-      label {
-        font-size: 0.9rem;
-      }
-
-      input {
-        width: 100%;
-        height: 1.7rem;
-        border-radius: 0.2rem;
-        border: none;
-        outline: none;
-        padding-left: 0.5rem;
-      }
-
-      input:focus {
-        box-shadow: 1px 1px 4px 0px var(--mainColorLight);
-      }
     }
 
     div:nth-of-type(1) {
@@ -49,24 +33,8 @@ main {
       row-gap: 1rem;
       column-gap: 2rem;
 
-      button {
-        height: 2.5rem;
-        padding-left: 0.5rem;
-        padding-right: 0.5rem;
-        background-color: var(--mainColor);
-        border: none;
-        border-radius: 0.2rem;
-        box-shadow: 2px 2px 4px -2px black;
-        font-weight: 600;
-      }
+     
 
-      button:disabled {
-        background-color: #555555FF;
-      }
-
-      button:hover:not(:disabled) {
-        background-color: var(--mainColorLight);
-      } 
 
     }
   }

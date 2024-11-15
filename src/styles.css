@@ -5,10 +5,15 @@
 
 :root:not(.light):not(.dark) {
   --secondaryColor: #FFFFFFFF;
+  --formBackgroundColor: #FFFFFFFF;
+  --formInputBackgroundColor: #555555FF;
+  --formInputBorder: 1px solid var(--formInputBackgroundColor);
   --textColor: #000000FF;
   
   @media (prefers-color-scheme: dark) {
     --secondaryColor: #222222FF;
+    --formBackgroundColor: #222222FF;
+    --formInputBorder: none;
     --textColor: #FFFFFFFF;
   }
 
@@ -19,11 +24,16 @@
 
 .light {
   --secondaryColor: #FFFFFFFF;
+  --formBackgroundColor: #FFFFFFFF;
+  --formInputBackgroundColor: #00000011;
+  --formInputBorder: none;
   --textColor: #000000FF;
 }
 
 .dark {
   --secondaryColor: #222222FF;
+  --formBackgroundColor: #222222FF;
+  --formInputBorder: none;
   --textColor: #FFFFFFFF;
 }
 
@@ -60,4 +70,44 @@ body, button {
 
 button {
   cursor: pointer;
+  background-color: var(--mainColor);
+}
+
+button.main {
+  height: 2.5rem;
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+  background-color: var(--mainColor);
+  border: none;
+  border-radius: 0.2rem;
+  box-shadow: 2px 2px 4px -2px black;
+  font-weight: 600;
+}
+
+button.main:disabled {
+  background-color: var(--formInputBackgroundColor);
+}
+
+button:hover:not(:disabled) {
+  background-color: var(--mainColorLight);
+}
+
+label.main {
+  font-size: 0.9rem;
+  color: var(--textColor);
+}
+
+input.main {
+  width: 100%;
+  height: 1.7rem;
+  border-radius: 0.2rem;
+  outline: none;
+  padding-left: 0.5rem;
+  background-color: var(--formInputBackgroundColor);
+  border: var(--formInputBorder);
+  color: var(--textColor);
+}
+
+input.main:focus {
+  box-shadow: 1px 1px 2px 0px var(--mainColorLight);
 }
