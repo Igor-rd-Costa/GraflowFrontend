@@ -1,0 +1,26 @@
+<div style="height: 100%;" class="bg-main">
+  <Header></Header>
+  <main>
+
+    <form method="post" [formGroup]="registerForm" (submit)="Register($event)">
+      <Heading>Register</Heading>
+      <div>
+        <label for="username">Username</label>
+        <input name="username" [formControl]="registerForm.controls.username">
+      </div>
+      <div>
+        <label for="email">Email</label>
+        <input name="email" [formControl]="registerForm.controls.email">
+      </div>
+      <div>
+        <label for="password">Password</label>
+        <input type="password" name="password" [formControl]="registerForm.controls.password">
+      </div>
+      <div>
+        <button type="submit" [disabled]="!registerForm.valid">
+          Register
+        </button>
+      </div>
+    </form>
+  </main>
+</div>

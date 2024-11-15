@@ -1,0 +1,25 @@
+<div style="height: 100%;" class="bg-main">
+  <Header></Header>
+  <main>
+
+    <form method="post" [formGroup]="loginForm" (submit)="Login($event)">
+      <Heading>Login</Heading>
+      <div>
+        <label for="username">Username</label>
+        <input name="username" [formControl]="loginForm.controls.username">
+      </div>
+      <div>
+        <label for="password">Password</label>
+        <input type="password" name="password" [formControl]="loginForm.controls.password">
+      </div>
+      <div>
+        <button type="submit" [disabled]="!loginForm.valid">
+          Login
+        </button>
+        <button type="button" (click)="GoToRegisterPage()">
+          Register
+        </button>
+      </div>
+    </form>
+  </main>
+</div>

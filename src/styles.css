@@ -1,1 +1,63 @@
-/* You can add global styles to this file, and also import other style files */
+:root {
+  --mainColor: #00AEB1FF;
+  --mainColorLight: #00DEE1FF;
+}
+
+:root:not(.light):not(.dark) {
+  --secondaryColor: #FFFFFFFF;
+  --textColor: #000000FF;
+  
+  @media (prefers-color-scheme: dark) {
+    --secondaryColor: #222222FF;
+    --textColor: #FFFFFFFF;
+  }
+
+  #root {
+    background-color: var(--secondaryColor);
+  }
+}
+
+.light {
+  --secondaryColor: #FFFFFFFF;
+  --textColor: #000000FF;
+}
+
+.dark {
+  --secondaryColor: #222222FF;
+  --textColor: #FFFFFFFF;
+}
+
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+ul {
+  list-style: none; 
+}
+
+.bg-main {
+  background: linear-gradient(to bottom right, var(--mainColor), var(--secondaryColor));
+}
+
+.material-symbols-outlined {
+  color: var(--textColor);
+  font-size: inherit;
+  font-variation-settings:
+  'FILL' 0,
+  'wght' 400,
+  'GRAD' 0,
+  'opsz' 24
+}
+
+
+body, button {
+  font-family: monospace;
+  color: var(--textColor);
+  font-size: 1rem;
+}
+
+button {
+  cursor: pointer;
+}

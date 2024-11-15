@@ -1,0 +1,6 @@
+h2 {
+  display: flex;
+  font-size: 2rem;
+  color: var(--mainColor);
+  width: fit-content;
+}

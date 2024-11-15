@@ -1,0 +1,46 @@
+<header>
+  <button id="logo" (click)="GoToMainPage()">Graflow</button>
+
+  <ul id="nav-bar">
+    <!-- <li>Item</li>
+    <li>Item</li>
+    <li>Item</li> -->
+  </ul>
+
+  <div id="color-theme-selector">
+    <button id="color-theme-selector-button" (click)="ShowThemeSelector()">
+      <span class="material-symbols-outlined">
+        {{GetColorThemeIcon()}}
+      </span>
+      Theme
+    </button>
+    <ul [style]="isColorSelectorVisible() ? {display: 'flex'} : {display: 'none'}" id="color-theme-list">
+      <li (click)="SelectTheme('OS Default')">
+        <span class="material-symbols-outlined">
+          contrast
+        </span>
+        OS Default
+      </li>
+      <li (click)="SelectTheme('Light')">
+        <span class="material-symbols-outlined">
+          light_mode
+        </span>
+        Light
+      </li>
+      <li (click)="SelectTheme('Dark')">
+        <span class="material-symbols-outlined">
+          dark_mode
+        </span>
+        Dark
+      </li>
+    </ul>
+  </div>
+  <div id="auth-anchors">
+    <button (click)="GoToLoginPage()">
+      Login
+    </button>
+    <button (click)="GoToRegisterPage()">
+      Register
+    </button>
+  </div>
+</header>
