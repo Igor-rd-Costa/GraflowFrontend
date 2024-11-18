@@ -1,0 +1,20 @@
+<div style="height: 100%;" class="bg-main">
+  <Header></Header>
+  <main>
+
+    <form method="post" [formGroup]="registerForm" (submit)="Register($event)">
+      <Heading>Register</Heading>
+      @if (formErrorMessage() !== null) {
+        <p>{{formErrorMessage()}}</p>
+      }
+      <FormInput label="Username" [formControl]="registerForm.controls.username" [errorMessage]="AuthService.GetUsernameErrorMessage(registerForm.controls.username)"/>
+      <FormInput label="Email" [formControl]="registerForm.controls.email" [errorMessage]="AuthService.GetEmailErrorMessage(registerForm.controls.email)"/>
+      <FormInput type="password" label="Password" [formControl]="registerForm.controls.password" [errorMessage]="AuthService.GetPasswordErrorMessage(registerForm.controls.password)"/>
+      <div id="button-wrapper">
+        <button type="submit" class="main" [disabled]="!registerForm.valid">
+          Register
+        </button>
+      </div>
+    </form>
+  </main>
+</div>

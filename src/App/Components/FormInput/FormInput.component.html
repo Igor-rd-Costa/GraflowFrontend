@@ -1,0 +1,9 @@
+<div>
+  <label [for]="label">{{label}}</label>
+  <input [type]="type" [classList]="((errorMessage !== null) ? 'error ' : '') + 'main'" [name]="label" (input)="OnInput($event)" [disabled]="isDisabled()">
+  <p>
+    @if (errorMessage !== null) {
+      {{errorMessage}}
+    }
+  </p>
+</div>

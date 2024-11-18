@@ -1,5 +1,7 @@
-import { AfterViewInit, Component, effect, signal } from '@angular/core';
+import { AfterViewInit, Component, effect, isDevMode, signal } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
+import { AuthService } from './Services/AuthService';
+import { GlobalEventsService } from './Services/GlobalEventsService';
 
 
 export type ColorTheme = 'OS Default' | 'Light' | 'Dark';
@@ -9,12 +11,20 @@ export type ColorTheme = 'OS Default' | 'Light' | 'Dark';
   selector: 'App',
   standalone: true,
   imports: [RouterOutlet],
+  providers: [AuthService, GlobalEventsService],
   templateUrl: './App.component.html',
   styleUrl: './App.component.css'
 })
 export class App implements AfterViewInit {
   title = 'Graflow';
   static colorTheme = signal<ColorTheme>('OS Default');
+  static backendAddress = signal(isDevMode() ? "https://localhost:7183/api/" : "")
+  static pointerMoveEventListeners: ((event: PointerEvent) => void)[] = [];
+  static pointerUpEventListeners: ((event: PointerEvent) => void)[] = [];
+
+  static BackendAddress(): string {
+    return this.backendAddress();
+  }
 
   constructor() {
     effect(() => {

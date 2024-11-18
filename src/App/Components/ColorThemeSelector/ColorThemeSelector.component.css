@@ -1,0 +1,51 @@
+#color-theme-selector {
+  height: 2.2rem;
+  width: 10rem;
+  button {
+    padding: 0.3rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    column-gap: 0.2rem;
+    background-color: transparent;
+    width: fit-content;
+    height: 100%;
+    border: none;
+    outline: none;
+    font-size: 1rem;
+    span {
+      font-size: 1.2rem;
+    }
+    color: var(--textColor);
+    cursor: pointer;
+  }
+
+  button:hover, button.selected {
+    background-color: #FFFFFF55;
+  }
+
+  ul {
+    position: relative;
+    margin-top: 0.2rem;
+    width: 10rem;
+    padding: 0.7rem;
+    row-gap: 0.2rem;
+    background-color: #FFFFFF55;
+    flex-direction: column;
+    box-shadow: 3px 3px 4px 0px #22222255;
+    
+    li {
+      cursor: pointer;
+      color: var(--textColor);
+      padding: 0.7rem;
+      display: flex;
+      column-gap: 0.5rem;
+      align-items: center;
+    }
+
+
+    li:hover, li.selected {
+      background-color: #FFFFFF55;
+    }
+  }
+}

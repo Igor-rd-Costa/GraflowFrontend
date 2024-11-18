@@ -4,15 +4,9 @@
 
     <form method="post" [formGroup]="loginForm" (submit)="Login($event)">
       <Heading>Login</Heading>
-      <div>
-        <label  class="main" for="username">Username</label>
-        <input  class="main" name="username" [formControl]="loginForm.controls.username">
-      </div>
-      <div>
-        <label  class="main" for="password">Password</label>
-        <input  class="main" type="password" name="password" [formControl]="loginForm.controls.password">
-      </div>
-      <div>
+      <FormInput label="Username" [formControl]="loginForm.controls.username" [errorMessage]="AuthService.GetUsernameErrorMessage(loginForm.controls.username)"/>
+      <FormInput type="password" label="Password" [formControl]="loginForm.controls.password" [errorMessage]="AuthService.GetPasswordErrorMessage(loginForm.controls.password)"/>
+      <div class="buttons">
         <button type="submit" class="main" [disabled]="!loginForm.valid">
           Login
         </button>
