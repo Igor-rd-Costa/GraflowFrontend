@@ -10,4 +10,9 @@ section {
     font-weight: 500;
     font-size: 1rem;
   }
+
+  div {
+    height: 100%;
+    width: 100%;
+  }
 }

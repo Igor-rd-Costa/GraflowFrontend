@@ -2,6 +2,7 @@ import { AfterViewInit, Component, effect, isDevMode, signal } from '@angular/co
 import { RouterOutlet } from '@angular/router';
 import { AuthService } from './Services/AuthService';
 import { GlobalEventsService } from './Services/GlobalEventsService';
+import { EngineService } from './Services/EngineService';
 
 
 export type ColorTheme = 'OS Default' | 'Light' | 'Dark';
@@ -11,7 +12,7 @@ export type ColorTheme = 'OS Default' | 'Light' | 'Dark';
   selector: 'App',
   standalone: true,
   imports: [RouterOutlet],
-  providers: [AuthService, GlobalEventsService],
+  providers: [AuthService, GlobalEventsService, EngineService],
   templateUrl: './App.component.html',
   styleUrl: './App.component.css'
 })
