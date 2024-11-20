@@ -67,70 +67,9 @@ export class WebGPUContext extends Context {
     return b;
   }
 
-
-  CreateOtherThingsTemp(shader: ShaderModule, vertexBuffer: Buffer) {
-    const vertexBufferLayout: GPUVertexBufferLayout[] = [
-      {
-        attributes: [
-          {
-            shaderLocation: 0, // position
-            offset: 0,
-            format: "float32x4",
-          },
-          {
-            shaderLocation: 1, // color
-            offset: 16,
-            format: "float32x4",
-          },
-        ],
-        arrayStride: 32,
-        stepMode: "vertex",
-      },
-    ];
-
-    const pipelineDescriptor: GPURenderPipelineDescriptor = {
-      vertex: {
-        module: (shader as WebGPUShaderModule).Module() as GPUShaderModule,
-        entryPoint: "vertex_main",
-        buffers: vertexBufferLayout,
-      },
-      fragment: {
-        module: (shader as WebGPUShaderModule).Module() as GPUShaderModule,
-        entryPoint: "fragment_main",
-        targets: [
-          {
-            format: navigator.gpu.getPreferredCanvasFormat(),
-          },
-        ],
-      },
-      primitive: {
-        topology: "triangle-list",
-      },
-      layout: "auto",
-    };
-    
-    const renderPipeline = this.device.createRenderPipeline(pipelineDescriptor);
-
-    const commandEncoder = this.device.createCommandEncoder();
-
-    const clearColor = { r: 0.0, g: 0.5, b: 1.0, a: 1.0 };
-
-    const renderPassDescriptor: GPURenderPassDescriptor = {
-      colorAttachments: [
-        {
-          clearValue: clearColor,
-          loadOp: "clear",
-          storeOp: "store",
-          view: (this.cntx as GPUCanvasContext).getCurrentTexture().createView(),
-        },
-      ],
-    };
-
-    const passEncoder = commandEncoder.beginRenderPass(renderPassDescriptor);
-    passEncoder.setPipeline(renderPipeline);
-    passEncoder.setVertexBuffer(0, (vertexBuffer as WebGPUBuffer).buffer);
-    passEncoder.draw(3);
-    passEncoder.end();
-    this.device.queue.submit([commandEncoder.finish()]);
+  override ResizeViewPort(w: number, h: number): void {
+    const canvas = this.Context().canvas;
+    canvas.width = w;
+    canvas.height = h;
   }
 }

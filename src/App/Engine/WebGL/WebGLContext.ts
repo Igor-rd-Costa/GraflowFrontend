@@ -47,4 +47,12 @@ export class WebGLContext extends Context {
     c.Create(this);
     return c;
   }
+
+
+  override ResizeViewPort(w: number, h: number): void {
+    const canvas = this.Context().canvas;
+    canvas.width = w;
+    canvas.height = h;
+    this.Context().viewport(0, 0, w, h);
+  }
 }

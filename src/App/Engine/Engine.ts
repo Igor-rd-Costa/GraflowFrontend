@@ -65,6 +65,10 @@ export default class Engine {
     requestAnimationFrame(runFn);
   }
 
+  Context() {
+    return this.ctx;
+  }
+
   static InvalidEnumError(enumName: string) {
     throw new Error(`Invalid ${enumName} value provided`);
   }
@@ -78,9 +82,7 @@ export default class Engine {
     } else {
       throw new Error("System does not support any graphics API supported by the application");
     }
-    const devicePixelRatio = window.devicePixelRatio;
-    canvas.width = canvas.clientWidth * devicePixelRatio;
-    canvas.height = canvas.clientHeight * devicePixelRatio;
+
     await cntx.Init();
     return cntx;
   }

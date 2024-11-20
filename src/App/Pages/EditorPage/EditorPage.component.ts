@@ -1,4 +1,4 @@
-import { Component, signal } from '@angular/core';
+import { Component, ElementRef, signal, ViewChild } from '@angular/core';
 import { AuthService } from '../../Services/AuthService';
 import { Router } from '@angular/router';
 import { LoggedHeader } from "../../Components/LoggedHeader/LoggedHeader.component";
@@ -44,6 +44,7 @@ export type EditorPanelsInfo = {
   styleUrl: './EditorPage.component.css'
 })
 export class EditorPage {
+  @ViewChild('main') main!: ElementRef<HTMLElement>
   dimension: EditorPanelsInfo = {
     outlinerPanel: { 
       size: {w: 250, h: 0}, 
@@ -69,6 +70,7 @@ export class EditorPage {
         this.router.navigate(['login']);
       }
     });
+    window.addEventListener('resize', this.OnWindowResize.bind(this));
   }
 
   OnOutlinerViewResize(offset: number) {
@@ -93,5 +95,22 @@ export class EditorPage {
     }
     this.dimension.viewPanel.size.h += offset;
     this.dimension.timelinePanel.size.h -= offset;
+  }
+
+  OnWindowResize() {
+    const paddingW = 32;
+    const paddingH = 24;
+
+    const fixedComponentsW = this.dimension.outlinerPanel.size.w + this.dimension.propertiesPanel.size.w;
+    const fixedComponentsH = this.dimension.timelinePanel.size.h;
+
+    const w = parseInt(getComputedStyle(this.main.nativeElement).width) - paddingW - fixedComponentsW;
+    const h = parseInt(getComputedStyle(this.main.nativeElement).height) - paddingH - fixedComponentsH;
+    
+    const ratioW = w / this.dimension.viewPanel.size.w;
+    const ratioH = h / this.dimension.viewPanel.size.h;
+
+    this.dimension.viewPanel.size.w *= ratioW;
+    this.dimension.viewPanel.size.h *= ratioH;
   }
 }

@@ -13,4 +13,6 @@ export abstract class Context {
   abstract CreateBuffer(bufferType: BufferType, size: number, data?: ArrayBufferLike): Buffer;
   abstract CreateRenderPipeline(vertexLayout: VertexAttribibute[], shaderCode: string[]): RenderPipeline;
   abstract CreateCommandBuffer(): CommandBuffer;
+
+  abstract ResizeViewPort(w: number, h: number): void;
 }
