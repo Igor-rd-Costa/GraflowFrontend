@@ -1,5 +1,4 @@
-<section (pointerdown)="OnPointerDown($event)" (pointerup)="OnPointerUp($event)" 
-(pointerleave)="OnPointerLeave($event)" (pointermove)="OnPointerMove($event)" #panel>
+<section #panel>
   @if (heading !== "") {
     <h3 class="bg-main">{{heading}}</h3>
   }

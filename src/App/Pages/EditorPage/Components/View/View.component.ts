@@ -1,6 +1,5 @@
-import { AfterViewInit, Component, ElementRef, EventEmitter, Injector, Input, Output, ViewChild } from '@angular/core';
-import { EditorPanel, ResizeFlag } from '../EditorPanel/EditorPanel.component';
-import { Size } from '../../EditorPage.component';
+import { AfterViewInit, Component, ElementRef, Injector, ViewChild } from '@angular/core';
+import { EditorPanel } from '../EditorPanel/EditorPanel.component';
 import Engine from '../../../../Engine/Engine';
 
 @Component({
@@ -11,9 +10,6 @@ import Engine from '../../../../Engine/Engine';
   styleUrl: './View.component.css'
 })
 export class View implements AfterViewInit {
-  @Input() resizeFlag: ResizeFlag = 0;
-  @Input() size: Size = { w: 0, h: 0 };
-  
   @ViewChild('canvas') canvas!: ElementRef<HTMLCanvasElement>;
   private engine!: Engine;
 

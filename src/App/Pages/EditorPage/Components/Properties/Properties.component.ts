@@ -1,6 +1,5 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { EditorPanel, ResizeFlag } from '../EditorPanel/EditorPanel.component';
-import { Size } from '../../EditorPage.component';
+import { Component } from '@angular/core';
+import { EditorPanel } from '../EditorPanel/EditorPanel.component';
 
 @Component({
   selector: 'Properties',
@@ -10,6 +9,4 @@ import { Size } from '../../EditorPage.component';
   styleUrl: './Properties.component.css'
 })
 export class Properties {
-  @Input() resizeFlag: ResizeFlag = 0;
-  @Input() size: Size = {w: 0, h: 0 };
 }

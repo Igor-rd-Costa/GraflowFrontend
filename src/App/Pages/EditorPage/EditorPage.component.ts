@@ -6,7 +6,6 @@ import { Outliner } from "./Components/Outliner/Outliner.component";
 import { View } from './Components/View/View.component';
 import { Properties } from "./Components/Properties/Properties.component";
 import { Timeline } from './Components/Timeline/Timeline.component';
-import { ResizeFlag, ResizeFlagBits } from './Components/EditorPanel/EditorPanel.component';
 import { VerticalResizeBar } from './Components/VerticalResizeBar/VerticalResizeBar.component';
 import { HorizontalResizeBar } from './Components/HorizontalResizeBar/HorizontalResizeBar.component';
 
@@ -14,6 +13,14 @@ export type Size = {
   w: number,
   h: number
 }
+
+export type ResizeFlag = number;
+export enum ResizeFlagBits {
+  RESIZE_LEFT   = 0b0001,
+  RESIZE_RIGHT  = 0b0010,
+  RESIZE_TOP    = 0b0100,
+  RESIZE_BOTTOM = 0b1000
+};
 
 export type EditorPanelsInfo = {
   outlinerPanel: {

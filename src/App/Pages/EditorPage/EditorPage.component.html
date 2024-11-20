@@ -2,12 +2,12 @@
   <LoggedHeader/>
   <main [style]="{gridTemplateColumns: dimension.outlinerPanel.size.w+'px 0.5rem ' + dimension.viewPanel.size.w + 'px 0.5rem '+ dimension.propertiesPanel.size.w + 'px',
     gridTemplateRows: dimension.viewPanel.size.h + 'px 0.5rem '+ dimension.timelinePanel.size.h + 'px'}" #main>
-    <Outliner [resizeFlag]="dimension.outlinerPanel.resizeFlag" style="grid-column-start: 1; grid-row-start: 1; grid-row-end: 4;"/>
+    <Outliner style="grid-column-start: 1; grid-row-start: 1; grid-row-end: 4;"/>
     <VerticalResizeBar (resize)="OnOutlinerViewResize($event)" style="grid-column-start: 2; grid-row-start: 1; grid-row-end: 4;"/>
-    <View [resizeFlag]="dimension.viewPanel.resizeFlag" style="grid-column-start: 3; grid-row-start: 1;"/>
+    <View style="grid-column-start: 3; grid-row-start: 1;"/>
     <VerticalResizeBar (resize)="OnViewPropertiesResize($event)" style="grid-column-start: 4; grid-row-start: 1; grid-row-end: 4;"/>
-    <Properties [resizeFlag]="dimension.propertiesPanel.resizeFlag" style="grid-column-start: 5; grid-row-start: 1; grid-row-end: 4;"/>
+    <Properties style="grid-column-start: 5; grid-row-start: 1; grid-row-end: 4;"/>
     <HorizontalResizeBar (resize)="OnViewTimelineResize($event)" style="grid-column-start: 3; grid-row-start: 2;"/>
-    <Timeline [resizeFlag]="dimension.timelinePanel.resizeFlag" style="grid-column-start: 3; grid-row-start: 3;"/> 
+    <Timeline style="grid-column-start: 3; grid-row-start: 3;"/> 
   </main>
 </div>

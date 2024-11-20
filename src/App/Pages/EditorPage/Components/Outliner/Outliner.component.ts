@@ -1,6 +1,5 @@
-import { Component, EventEmitter, Input, Output, signal } from '@angular/core';
-import { EditorPanel, ResizeFlag } from '../EditorPanel/EditorPanel.component';
-import { Size } from '../../EditorPage.component';
+import { Component, signal } from '@angular/core';
+import { EditorPanel } from '../EditorPanel/EditorPanel.component';
 
 @Component({
   selector: 'Outliner',
@@ -10,7 +9,5 @@ import { Size } from '../../EditorPage.component';
   styleUrl: './Outliner.component.css'
 })
 export class Outliner {
-  @Input() resizeFlag: ResizeFlag = 0;
-  @Input() size: Size = {w: 0, h: 0 };
   protected heading = signal<string>("Outliner");
 }
