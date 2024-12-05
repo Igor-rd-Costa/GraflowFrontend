@@ -1,0 +1,39 @@
+<div id="load-project-pop-up" [style]="{display: isVisible() ? 'grid' : 'none'}">
+    @if (display() === 0) {
+        <div>
+            <Heading>Open Project</Heading>
+            <ul id="project-list">
+                @for (project of projects(); track $index) {
+                    <li class="project-item" (click)="SelectProject($event, project)" (dblclick)="LoadSelectedProject()">
+                        <img>
+                        <div>
+                            <span class="project-item-title">{{project.name}}</span>
+                            <br>
+                            <span class="project-item-date">{{project.lastAccessDate.toDateString()}}</span>
+                        </div>
+                    </li>
+                }
+            </ul>
+            
+            <div id="button-bar">
+                <MainButton type="button" [disabled]="selectedProjectItem === null" (click)="LoadSelectedProject()">Load</MainButton>
+                <MainButton type="button" [disabled]="selectedProjectItem === null" (click)="DeleteSelectedProject()">Delete</MainButton>
+                <MainButton type="button" (onClick)="SetDisplay(LoadProjectPopUpDisplay.DISPLAY_CREATE)">New Project</MainButton>
+                <SecondaryButton type="button" (onClick)="Hide()">Cancel</SecondaryButton>
+            </div>
+        </div>
+    } @else {
+        <form [formGroup]="createProjectForm" (submit)="Create($event)">
+            <Heading>Create Project</Heading>
+            <FormInput label="Name" [formControl]="createProjectForm.controls.name"/>
+            
+            <div id="button-bar">
+                <MainButton type="submit" [disabled]="!createProjectForm.valid">Create</MainButton>
+                <MainButton type="button" (onClick)="SetDisplay(LoadProjectPopUpDisplay.DISPLAY_LOAD)">Load</MainButton>
+                <SecondaryButton type="button" (onClick)="Hide()">Cancel</SecondaryButton>
+            </div>
+        </form>
+    }
+        
+</div>
+    

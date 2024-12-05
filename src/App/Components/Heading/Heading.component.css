@@ -3,4 +3,5 @@ h2 {
   font-size: 2rem;
   color: var(--mainColor);
   width: fit-content;
+  font-weight: 500;
 }

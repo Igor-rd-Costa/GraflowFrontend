@@ -1,0 +1,12 @@
+<div>
+  <Menu heading="Project">
+    <MenuItem heading="New" (click)="Select($event, Action.MENU_ACTION_PROJECT_NEW)"></MenuItem>
+    <MenuItem heading="Load" (click)="Select($event, Action.MENU_ACTION_PROJECT_LOAD)"></MenuItem>
+    <SubMenu heading="Hello">
+      <MenuItem heading="World"></MenuItem>
+    </SubMenu>
+  </Menu>
+  <Menu heading="View">
+    <MenuItem heading="Reset Panels" (click)="Select($event, Action.MENU_ACTION_VIEW_RESET)"></MenuItem>
+  </Menu>
+</div>

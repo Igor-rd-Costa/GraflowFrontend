@@ -1,0 +1,8 @@
+<button id="menu-button" (click)="OnClick($event)" #menuButton>{{heading}}
+  <div id="menu-wrapper" [style]="{display: isVisible() ? 'block' : 'none', left: '-1px', top: top}">
+    <div class="menu-top-border"><div [style]="{width: buttonWidth()}"></div><div></div></div>
+    <div id="menu">
+      <ng-content/>
+    </div>
+  </div>
+</button>

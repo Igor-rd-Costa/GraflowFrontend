@@ -1,40 +1,49 @@
 :root {
-  --mainColor: #00AEB1FF;
-  --mainColorLight: #00DEE1FF;
+  /* --mainColor: #00AEB1FF;
+  --mainColorBright: #00DEE1FF;
+  --darkColorDark: #111111FF;
+  --darkColor: #222222FF;
+  --darkColorBright: #525252FF;
+  --brightColor: #EEEEEEFF; */
+  --shadow: 2px 2px 2px 0px black;
+  --blue: #263A99FF;
+  --blueBright: #3549A8FF;
+  --skyBlue: #97B4DEFF;
+  --skyBlueBright: #B6D3FDFF;
+  --dark: #2A2829FF;
+  --darkBright: #3A3839FF;
+  --bright: #F0EBE5FF;
+  --pastelGray: #DCD0BEFF;
 }
 
-:root:not(.light):not(.dark) {
-  --secondaryColor: #FFFFFFFF;
-  --formBackgroundColor: #FFFFFFFF;
-  --formInputBackgroundColor: #555555FF;
-  --formInputBorder: 1px solid var(--formInputBackgroundColor);
-  --textColor: #000000FF;
-  
-  @media (prefers-color-scheme: dark) {
-    --secondaryColor: #222222FF;
-    --formBackgroundColor: #222222FF;
-    --formInputBorder: none;
-    --textColor: #FFFFFFFF;
-  }
-
-  #root {
-    background-color: var(--secondaryColor);
-  }
+.rajdhani-light {
+  font-family: "Rajdhani", serif;
+  font-weight: 300;
+  font-style: normal;
 }
 
-.light {
-  --secondaryColor: #FFFFFFFF;
-  --formBackgroundColor: #FFFFFFFF;
-  --formInputBackgroundColor: #00000011;
-  --formInputBorder: none;
-  --textColor: #000000FF;
+.rajdhani {
+  font-family: "Rajdhani", serif;
+  font-weight: 400;
+  font-style: normal;
 }
 
-.dark {
-  --secondaryColor: #222222FF;
-  --formBackgroundColor: #222222FF;
-  --formInputBorder: none;
-  --textColor: #FFFFFFFF;
+.rajdhani-medium {
+  font-family: "Rajdhani", serif;
+  font-weight: 500;
+  font-style: normal;
+}
+
+.rajdhani-semibold {
+  font-family: "Rajdhani", serif;
+  font-weight: 600;
+  font-style: normal;
+}
+
+.rajdhani-bold {
+  font-family: "Rajdhani", serif;
+  font-weight: 700;
+  font-style: normal;
 }
 
 * {
@@ -48,11 +57,11 @@ ul {
 }
 
 .bg-main {
-  background: linear-gradient(to top, var(--mainColor), #00AEB177);
+  background: linear-gradient(to top right, var(--skyBlue) 30%, var(--skyBlueBright));
 }
 
 .material-symbols-outlined {
-  color: var(--textColor);
+  color: var(--bright);
   font-size: inherit;
   font-variation-settings:
   'FILL' 0,
@@ -61,72 +70,21 @@ ul {
   'opsz' 24
 }
 
+body {
+  background-color: var(--dark);
+}
 
 body, button {
-  font-family: monospace;
-  color: var(--textColor);
-  font-size: 1rem;
+  color: var(--bright);
+  border: none;
 }
 
 button {
-  cursor: pointer;
-  background-color: var(--mainColor);
-}
-
-button.main {
-  height: 2.5rem;
-  padding-left: 0.5rem;
-  padding-right: 0.5rem;
-  background-color: var(--mainColor);
+  font-size: inherit;
+  font-family: inherit;
+  font-weight: inherit;
+  background-color: transparent;
   border: none;
-  box-shadow: 2px 2px 4px -2px black;
-  font-weight: 600;
+  cursor: pointer;
+  text-align: start;
 }
-
-button.main:disabled {
-  background-color: var(--formInputBackgroundColor);
-}
-
-button:hover:not(:disabled) {
-  background-color: var(--mainColorLight);
-}
-
-header.main {
-  padding-left: max(5vw, 2rem);
-  padding-right: max(5vw, 2rem);
-  height: 3rem;
-  display: grid;
-  grid-template-columns: auto 1fr auto auto;
-  grid-template-rows: 1fr;
-  column-gap: 2rem;
-  justify-items: center;
-  align-items: center;
-
-  #logo {
-    color: var(--textColor);
-    font-size: 2rem;
-    border: none;
-    background-color: transparent;
-  }
-
-  ul#nav-bar {
-    display: flex;
-    column-gap: 3rem;
-  }
-
-  div#auth-anchors {
-    display: flex;
-    column-gap: 2rem;
-    
-    button {
-      padding: 0.5rem;
-      background-color: transparent;
-      border: none;
-    }
-
-    button:hover {
-      background-color: #FFFFFF55;
-    }
-  }
-}
-

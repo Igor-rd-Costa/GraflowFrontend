@@ -1,44 +1,18 @@
-import { AfterViewInit, Component, effect, signal } from '@angular/core';
-import { App, ColorTheme } from '../../App.component';
+import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import { ColorThemeSelector } from "../ColorThemeSelector/ColorThemeSelector.component";
+import { MainButton } from '../MainButton/MainButton.component';
+import { App } from '../../App.component';
 
 @Component({
   selector: 'Header',
   standalone: true,
-  imports: [ColorThemeSelector],
+  imports: [MainButton],
   templateUrl: './Header.component.html',
   styleUrl: './Header.component.css'
 })
-export class Header implements AfterViewInit {
+export class Header {
 
-  constructor(private router: Router) {
-    effect(() => {
-      const colorTheme = App.GetColorTheme();
-      const listItems = document.getElementById('color-theme-list')?.children;
-      if (!listItems) {
-        return;
-      }
-      for (let i = 0; i < listItems.length; i++) {
-        listItems[i].classList.remove('selected');
-      }
-      switch(colorTheme) {
-        case 'OS Default':
-          listItems[0].classList.add('selected');
-          break;
-        case 'Light':
-          listItems[1].classList.add('selected');
-          break;
-        case 'Dark':
-          listItems[2].classList.add('selected');
-          break;
-        }
-    });
-  }
-
-  ngAfterViewInit(): void {
-    
-  }
+  constructor(private router: Router) {}
 
   GoToMainPage() {
     this.router.navigate(['']);

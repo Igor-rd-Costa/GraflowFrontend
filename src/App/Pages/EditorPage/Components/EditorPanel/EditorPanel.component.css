@@ -1,14 +1,17 @@
 section {
-  border: 0.1rem solid var(--mainColor);
+  border: 0.1rem solid var(--skyBlue);
   width: 100%;
   height: 100%;
   overflow: hidden;
+  background-color: var(--dark);
   
   h3 {
     padding: 0.2rem;
     padding-left: 0.5rem;
     font-weight: 500;
     font-size: 1rem;
+    color: white;
+    box-shadow: 0px 3px 4px -2px black;
   }
 
   div {

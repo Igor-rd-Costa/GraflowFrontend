@@ -1,4 +1,4 @@
-<div style="height: 100%;" class="bg-main">
+<div style="height: 100%">
   <Header></Header>
   <main>
 
@@ -11,9 +11,8 @@
       <FormInput label="Email" [formControl]="registerForm.controls.email" [errorMessage]="AuthService.GetEmailErrorMessage(registerForm.controls.email)"/>
       <FormInput type="password" label="Password" [formControl]="registerForm.controls.password" [errorMessage]="AuthService.GetPasswordErrorMessage(registerForm.controls.password)"/>
       <div id="button-wrapper">
-        <button type="submit" class="main" [disabled]="!registerForm.valid">
-          Register
-        </button>
+        <MainButton type="submit" [disabled]="!registerForm.valid">Register</MainButton>
+        <SecondaryButton type="button" (onClick)="GoToLoginPage()">Cancel</SecondaryButton>
       </div>
     </form>
   </main>

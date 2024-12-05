@@ -1,29 +1,20 @@
-import { inject, Injectable } from "@angular/core";
-import { App } from "../App.component";
+import { Injectable } from "@angular/core";
+import { APIReturnFlags, App } from "../App.component";
 import { HttpClient } from "@angular/common/http";
 import { AbstractControl, ValidationErrors, Validators } from "@angular/forms";
 import { FormInput } from "../Components/FormInput/FormInput.component";
 
-export enum AuthStatusBits
-{
-    USERNAME_TAKEN  = 0b00001,
-    EMAIL_TAKEN     = 0b00010,
-    BAD_REQUEST     = 0b00100,
-    SIGN_IN_FAILED  = 0b01000,
-    SUCCESS         = 0b10000
-}
-
 @Injectable()
 export class AuthService {
-  address = App.BackendAddress() + "auth/";
+  address = App.Backend() + "auth/";
 
   constructor(private http: HttpClient) {}
 
   Login(username: string, password: string): Promise<boolean> {
     return new Promise<boolean>(resolve => {
-      this.http.post<AuthStatusBits>(`${this.address}login`, {username, password}, {withCredentials: true}).subscribe({
+      this.http.post<APIReturnFlags>(`${this.address}login`, {username, password}, {withCredentials: true}).subscribe({
         next: status => {
-          if (status === AuthStatusBits.SUCCESS) {
+          if (status === APIReturnFlags.SUCCESS) {
             resolve(true);
             return;
           }
@@ -38,15 +29,15 @@ export class AuthService {
     });
   }
 
-  Register(username: string, email: string, password: string): Promise<AuthStatusBits> {
-    return new Promise<AuthStatusBits>(resolve => {
-      this.http.post<AuthStatusBits>(`${this.address}register`, {username, email, password}, {withCredentials: true}).subscribe({
+  Register(username: string, email: string, password: string): Promise<APIReturnFlags> {
+    return new Promise<APIReturnFlags>(resolve => {
+      this.http.post<APIReturnFlags>(`${this.address}register`, {username, email, password}, {withCredentials: true}).subscribe({
         next: status => {
           resolve(status);
         },
         error: err => {
           console.error(err);
-          resolve(AuthStatusBits.BAD_REQUEST);
+          resolve(APIReturnFlags.BAD_REQUEST);
         }
       });
     });

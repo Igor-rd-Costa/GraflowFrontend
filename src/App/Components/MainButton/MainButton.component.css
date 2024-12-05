@@ -1,0 +1,21 @@
+button {
+  height: 2.5rem;
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+  background-color: var(--skyBlue);
+  border: none;
+  text-align: center;
+  font-size: 1.2rem;
+  box-shadow: var(--shadow);
+  width: 100%;
+  color: var(--dark);
+  text-transform: uppercase;
+}
+
+button:disabled {
+  background-color: var(--darkBright);
+}
+
+button:hover:not(:disabled) {
+  background-color: var(--skyBlueBright);
+}

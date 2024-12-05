@@ -1,0 +1,8 @@
+<button id="auth-menu" [classList]="[isVisible() ? 'visible' : '']" (click)="Show()">
+  <span class="material-symbols-outlined">
+    person
+  </span>
+  <div [style]="{display: isVisible() ? 'grid' : 'none'}">
+    <li (click)="Logout()">Logout</li>
+  </div>
+</button>

@@ -5,11 +5,13 @@ import { Router } from '@angular/router';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AuthService } from '../../Services/AuthService';
 import { FormInput } from "../../Components/FormInput/FormInput.component";
+import { MainButton } from '../../Components/MainButton/MainButton.component';
+import { SecondaryButton } from '../../Components/SecondaryButton/SecondaryButton.component';
 
 @Component({
   selector: 'LoginPage',
   standalone: true,
-  imports: [Header, Heading, ReactiveFormsModule, FormInput],
+  imports: [Header, Heading, ReactiveFormsModule, FormInput, MainButton, SecondaryButton],
   templateUrl: './LoginPage.component.html',
   styleUrl: './LoginPage.component.css'
 })

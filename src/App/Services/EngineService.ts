@@ -1,11 +1,11 @@
 import { Injectable } from "@angular/core";
-import { App } from "../App.component";
+import { App} from "../App.component";
 import { HttpClient } from "@angular/common/http";
 
 
 @Injectable()
 export class EngineService {
-  private address = App.BackendAddress()+"engine/";
+  private address = App.Backend()+"engine/";
 
   public constructor(private http: HttpClient) {}
 

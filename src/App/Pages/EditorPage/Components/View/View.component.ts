@@ -16,6 +16,13 @@ export class View implements AfterViewInit {
   public constructor(private injector: Injector) {}
 
   async ngAfterViewInit(): Promise<void> {
+    
+  }
+
+  async Init() {
+    if (this.engine !== undefined) {
+      return;
+    }
     this.engine = new Engine(this.injector, this.canvas.nativeElement);
     try {
       const canvas = this.canvas.nativeElement;

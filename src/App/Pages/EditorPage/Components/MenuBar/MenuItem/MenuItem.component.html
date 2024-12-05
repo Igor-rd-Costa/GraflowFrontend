@@ -1,0 +1,12 @@
+<button type="button">
+  @if (icon !== null) {
+    @if (icon.startsWith('g.')) {
+      <span class="material-symbols-outlined">
+        {{icon.substring(2)}}
+      </span>
+    } @else {
+      <img [src]="icon">
+    }
+  }
+  <p>{{heading}}</p>
+</button>

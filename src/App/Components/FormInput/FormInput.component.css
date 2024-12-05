@@ -9,18 +9,18 @@ div {
     width: 100%;
     height: 1.7rem;
     outline: none;
-    padding-left: 0.5rem;
-    background-color: var(--formInputBackgroundColor);
-    border: var(--formInputBorder);
+    background-color: transparent;
+    border: none;
+    border-bottom: 2px solid var(--pastelGray);
     color: var(--textColor);
   }
   
   input:not(.error):focus {
-    border: 1px solid var(--mainColorLight);
+    border-bottom-color: #FFFFFFFF;
   }
   
   input.error {
-    border: 1px solid #CC0000FF;
+    border-bottom-color: #CC0000FF;
   }
 
   p {

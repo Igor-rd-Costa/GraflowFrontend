@@ -1,19 +1,10 @@
-<header class="main">
-  <button id="logo" (click)="GoToMainPage()">Graflow</button>
-
-  <ul id="nav-bar">
-    <!-- <li>Item</li>
-    <li>Item</li>
-    <li>Item</li> -->
-  </ul>
-
-  <ColorThemeSelector/>
-  <div id="auth-anchors">
-    <button (click)="GoToLoginPage()">
-      Login
-    </button>
-    <button (click)="GoToRegisterPage()">
-      Register
-    </button>
+<header>
+  <div>
+    <button id="logo" (click)="GoToMainPage()">Graflow</button>
+    
+    <div id="auth-anchors">
+      <MainButton type="button" (onClick)="GoToLoginPage()">Login</MainButton>
+      <MainButton type="button" (onClick)="GoToRegisterPage()">Register</MainButton>
+    </div>
   </div>
 </header>

@@ -1,0 +1,46 @@
+button#menu-button {
+  padding: 0.2rem;
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+  font-size: 0.9rem;
+  width: 100%;
+  border: 0.1rem solid transparent;
+  position: relative;
+}
+
+button#menu-button:hover, button#menu-button.opened {
+  border: 0.1rem solid var(--skyBlue);
+  background-color: var(--darkBright);
+}
+
+button#menu-button.opened {
+  border-bottom-width: 0rem;
+}
+
+div#menu-wrapper   {
+  position: absolute;
+  min-width: 10rem;
+  box-shadow: var(--shadow);
+  border: 1px solid var(--skyBlue);
+  border-top-width: 0rem;
+  background-color: var(--darkBright);
+}
+
+div#menu {
+  padding: 2px;
+  position: relative;
+  
+}
+
+div.menu-top-border {
+  display: grid;
+  grid-template-columns: auto 1fr;
+
+  div:first-child {
+    border-top: 1px solid transparent;
+  }
+  
+  div:last-child {
+    border-top: 1px solid var(--skyBlue);
+  }
+}

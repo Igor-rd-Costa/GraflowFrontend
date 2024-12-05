@@ -9,12 +9,11 @@ main {
     width: 24rem;
     height: fit-content;
     padding: 1rem;
-    background-color: var(--formBackgroundColor);
     display: grid;
     row-gap: 0.5rem;
     grid-template-rows: 2rem auto auto 1fr;
     justify-items: center;
-    box-shadow: 2px 2px 4px -2px black;
+    
 
     forminput:first-of-type {
       margin-top: 1.5rem;

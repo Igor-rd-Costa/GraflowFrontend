@@ -1,13 +1,16 @@
-import { Component, ElementRef, signal, ViewChild } from '@angular/core';
+import { Component, ElementRef, ViewChild } from '@angular/core';
 import { AuthService } from '../../Services/AuthService';
 import { Router } from '@angular/router';
-import { LoggedHeader } from "../../Components/LoggedHeader/LoggedHeader.component";
 import { Outliner } from "./Components/Outliner/Outliner.component";
 import { View } from './Components/View/View.component';
 import { Properties } from "./Components/Properties/Properties.component";
 import { Timeline } from './Components/Timeline/Timeline.component';
 import { VerticalResizeBar } from './Components/VerticalResizeBar/VerticalResizeBar.component';
 import { HorizontalResizeBar } from './Components/HorizontalResizeBar/HorizontalResizeBar.component';
+import { EditorHeader } from "./Components/EditorHeader/EditorHeader.component";
+import { ProjectService } from '../../Services/ProjectService';
+import { LoadProjectPopUp } from './Components/LoadProjectPopUp/LoadProjectPopUp.component';
+import { MenuAction } from './Components/MenuBar/MenuBar.component';
 
 export type Size = {
   w: number,
@@ -42,23 +45,14 @@ export type EditorPanelsInfo = {
 }
 
 
-
-@Component({
-  selector: 'EditorPage',
-  standalone: true,
-  imports: [LoggedHeader, Outliner, View, Properties, Timeline, VerticalResizeBar, HorizontalResizeBar],
-  templateUrl: './EditorPage.component.html',
-  styleUrl: './EditorPage.component.css'
-})
-export class EditorPage {
-  @ViewChild('main') main!: ElementRef<HTMLElement>
-  dimension: EditorPanelsInfo = {
+function GetDefaultPanelDimensions(): EditorPanelsInfo {
+  return {
     outlinerPanel: { 
       size: {w: 250, h: 0}, 
       resizeFlag: ResizeFlagBits.RESIZE_RIGHT
     },
     viewPanel: {
-      size: {w: window.innerWidth - (250 * 2) - 32, h: window.innerHeight - 175 - (5 * 16)}, 
+      size: {w: window.innerWidth - (250 * 2) - 32, h: window.innerHeight - 32 - (1.5 * 16) - 175 }, 
       resizeFlag: ResizeFlagBits.RESIZE_LEFT | ResizeFlagBits.RESIZE_RIGHT | ResizeFlagBits.RESIZE_BOTTOM 
     },
     propertiesPanel: { 
@@ -69,15 +63,41 @@ export class EditorPage {
       size: {w: 0, h: 175},
       resizeFlag: ResizeFlagBits.RESIZE_LEFT | ResizeFlagBits.RESIZE_RIGHT | ResizeFlagBits.RESIZE_TOP 
     }
-  };
+  }
+}
 
-  constructor(private auth: AuthService, private router: Router) {
-    this.auth.IsLogged().then(isLogged => {
+
+@Component({
+  selector: 'EditorPage',
+  standalone: true,
+  imports: [Outliner, View, Properties, Timeline, VerticalResizeBar, HorizontalResizeBar, EditorHeader, LoadProjectPopUp],
+  templateUrl: './EditorPage.component.html',
+  styleUrl: './EditorPage.component.css'
+})
+export class EditorPage {
+  @ViewChild('main') main!: ElementRef<HTMLElement>;
+  @ViewChild(LoadProjectPopUp) loadProjectPopUp!: LoadProjectPopUp;
+  @ViewChild(View) viewPanel!: View;
+  dimension: EditorPanelsInfo = GetDefaultPanelDimensions();
+
+  constructor(private auth: AuthService, private router: Router, private projectService: ProjectService) {
+    this.auth.IsLogged().then(async isLogged => {
       if (!isLogged) {
         this.router.navigate(['login']);
+        return;
       }
+      window.addEventListener('resize', this.OnWindowResize.bind(this));
+      if (this.projectService.Project() === null) {
+        let loadedProject = false;
+        do {
+          loadedProject = await this.loadProjectPopUp.Load();
+          if (!loadedProject) {
+            console.log("Canceled Load!");
+          }
+        } while (!loadedProject);
+      } 
+      await this.viewPanel.Init();
     });
-    window.addEventListener('resize', this.OnWindowResize.bind(this));
   }
 
   OnOutlinerViewResize(offset: number) {
@@ -119,5 +139,19 @@ export class EditorPage {
 
     this.dimension.viewPanel.size.w *= ratioW;
     this.dimension.viewPanel.size.h *= ratioH;
+  }
+
+  OnMenuSelect(action: MenuAction) {
+    switch (action) {
+      case MenuAction.MENU_ACTION_PROJECT_NEW: {
+        this.loadProjectPopUp.New();
+      } break;
+      case MenuAction.MENU_ACTION_PROJECT_LOAD: {
+        this.loadProjectPopUp.Load();
+      } break;
+      case MenuAction.MENU_ACTION_VIEW_RESET: {
+        this.dimension = GetDefaultPanelDimensions();
+      }
+    }
   }
 }

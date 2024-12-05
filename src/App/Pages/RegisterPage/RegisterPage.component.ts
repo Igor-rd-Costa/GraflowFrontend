@@ -1,15 +1,18 @@
 import { Component, signal } from '@angular/core';
 import { Header } from '../../Components/Header/Header.component';
-import { AbstractControl, FormControl, FormGroup, ReactiveFormsModule, ValidationErrors, Validators } from '@angular/forms';
+import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Heading } from '../../Components/Heading/Heading.component';
-import { AuthService, AuthStatusBits } from '../../Services/AuthService';
+import { AuthService } from '../../Services/AuthService';
 import { Router } from '@angular/router';
 import { FormInput } from '../../Components/FormInput/FormInput.component';
+import { MainButton } from '../../Components/MainButton/MainButton.component';
+import { SecondaryButton } from "../../Components/SecondaryButton/SecondaryButton.component";
+import { APIReturnFlags } from '../../App.component';
 
 @Component({
   selector: 'RegisterPage',
   standalone: true,
-  imports: [Header, Heading, ReactiveFormsModule, FormInput],
+  imports: [Header, Heading, ReactiveFormsModule, FormInput, MainButton, SecondaryButton],
   templateUrl: './RegisterPage.component.html',
   styleUrl: './RegisterPage.component.css'
 })
@@ -34,21 +37,25 @@ export class RegisterPage {
       this.registerForm.controls.email.value!,
       this.registerForm.controls.password.value!
     );
-    if (result === AuthStatusBits.SUCCESS)
+    if (result === APIReturnFlags.SUCCESS)
     {
       this.router.navigate(['editor']);
-    } else if (result === AuthStatusBits.SIGN_IN_FAILED) {
+    } else if (result === APIReturnFlags.SIGN_IN_FAILED) {
       this.router.navigate(['login']);
     } else {
-      if ((result & AuthStatusBits.USERNAME_TAKEN) === AuthStatusBits.USERNAME_TAKEN) {
+      if ((result & APIReturnFlags.USERNAME_TAKEN) === APIReturnFlags.USERNAME_TAKEN) {
         this.registerForm.controls.username.setErrors({taken: true});
       }
-      if ((result & AuthStatusBits.EMAIL_TAKEN) === AuthStatusBits.EMAIL_TAKEN) {
+      if ((result & APIReturnFlags.EMAIL_TAKEN) === APIReturnFlags.EMAIL_TAKEN) {
         this.registerForm.controls.email.setErrors({taken: true});
       }
-      if (result === AuthStatusBits.BAD_REQUEST) {
+      if (result === APIReturnFlags.BAD_REQUEST) {
         this.formErrorMessage.set("An error ocurred, if the problem persists contact our support team");
       }
     }
+  }
+
+  GoToLoginPage() {
+    this.router.navigate(['login']);
   }
 }

@@ -1,0 +1,20 @@
+<button id="menu-button" (click)="OnClick($event)" #menuButton>
+  @if (icon !== null) {
+    @if (icon.startsWith('g.')) {
+      <span class="material-symbols-outlined">
+        {{icon.substring(2)}}
+      </span>
+    } @else {
+      <img [src]="icon">
+    }
+  }
+  <p>{{heading}}</p>
+  <span class="material-symbols-outlined">
+    chevron_right
+  </span>
+  <div id="menu-wrapper" [style]="{display: isVisible() ? 'flex' : 'none', top: '-4px', left: left()}" #menuWrapper>
+    <div id="menu">
+      <ng-content/>
+    </div>
+  </div>
+</button>

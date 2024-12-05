@@ -1,4 +1,4 @@
-<div style="height: 100%;" class="bg-main">
+<div style="height: 100%">
   <Header></Header>
   <main>
 
@@ -7,12 +7,8 @@
       <FormInput label="Username" [formControl]="loginForm.controls.username" [errorMessage]="AuthService.GetUsernameErrorMessage(loginForm.controls.username)"/>
       <FormInput type="password" label="Password" [formControl]="loginForm.controls.password" [errorMessage]="AuthService.GetPasswordErrorMessage(loginForm.controls.password)"/>
       <div class="buttons">
-        <button type="submit" class="main" [disabled]="!loginForm.valid">
-          Login
-        </button>
-        <button type="button" class="main" (click)="GoToRegisterPage()">
-          Register
-        </button>
+        <MainButton type="submit" [disabled]="!loginForm.valid">Login</MainButton>
+        <SecondaryButton type="button" (onClick)="GoToRegisterPage()">Register</SecondaryButton>
       </div>
     </form>
   </main>
