@@ -43,6 +43,7 @@ ul#project-list {
     grid-template-columns: auto 1fr;
     gap: 1rem;
     cursor: pointer;
+    border: 1px solid transparent;
 
     img {
       height: 2.5rem;
@@ -58,6 +59,7 @@ ul#project-list {
 
   li.selected {
     background-color: #333333FF;
+    border: 1px solid var(--skyBlue);
   }
 }
 

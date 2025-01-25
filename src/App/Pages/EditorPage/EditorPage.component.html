@@ -1,4 +1,4 @@
-<div id="main-wrapper">
+<div id="main-wrapper" #pageWrapper>
   <EditorHeader (menuSelect)="OnMenuSelect($event)"/>
   <main [style]="{gridTemplateColumns: dimension.outlinerPanel.size.w+'px 0.5rem ' + dimension.viewPanel.size.w + 'px 0.5rem '+ dimension.propertiesPanel.size.w + 'px',
     gridTemplateRows: dimension.viewPanel.size.h + 'px 0.5rem '+ dimension.timelinePanel.size.h + 'px'}" #main>

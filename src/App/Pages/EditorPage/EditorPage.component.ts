@@ -76,6 +76,7 @@ function GetDefaultPanelDimensions(): EditorPanelsInfo {
 })
 export class EditorPage {
   @ViewChild('main') main!: ElementRef<HTMLElement>;
+  @ViewChild('pageWrapper') pageWrapper!: ElementRef<HTMLElement>;
   @ViewChild(LoadProjectPopUp) loadProjectPopUp!: LoadProjectPopUp;
   @ViewChild(View) viewPanel!: View;
   dimension: EditorPanelsInfo = GetDefaultPanelDimensions();
@@ -90,10 +91,9 @@ export class EditorPage {
       if (this.projectService.Project() === null) {
         let loadedProject = false;
         do {
+          this.UnfocusPage();
           loadedProject = await this.loadProjectPopUp.Load();
-          if (!loadedProject) {
-            console.log("Canceled Load!");
-          }
+          this.FocusPage();
         } while (!loadedProject);
       } 
       await this.viewPanel.Init();
@@ -141,17 +141,33 @@ export class EditorPage {
     this.dimension.viewPanel.size.h *= ratioH;
   }
 
-  OnMenuSelect(action: MenuAction) {
+  async OnMenuSelect(action: MenuAction) {
     switch (action) {
       case MenuAction.MENU_ACTION_PROJECT_NEW: {
-        this.loadProjectPopUp.New();
+        this.UnfocusPage();
+        await this.loadProjectPopUp.New();
+        this.FocusPage();
       } break;
       case MenuAction.MENU_ACTION_PROJECT_LOAD: {
-        this.loadProjectPopUp.Load();
+        this.UnfocusPage();
+        await this.loadProjectPopUp.Load();
+        this.FocusPage();
       } break;
       case MenuAction.MENU_ACTION_VIEW_RESET: {
         this.dimension = GetDefaultPanelDimensions();
       }
     }
+  }
+
+  UnfocusPage() {
+    this.pageWrapper.nativeElement.style.filter = "blur(2px)";
+    this.pageWrapper.nativeElement.style.pointerEvents = "none";
+    this.pageWrapper.nativeElement.style.userSelect = "none";
+  }
+  
+  FocusPage() {
+    this.pageWrapper.nativeElement.style.filter = "";
+    this.pageWrapper.nativeElement.style.pointerEvents = "";
+    this.pageWrapper.nativeElement.style.userSelect = "";
   }
 }

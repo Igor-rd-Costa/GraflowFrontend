@@ -2,7 +2,7 @@ div {
 
   label {
     font-size: 0.9rem;
-    color: var(--textColor);
+    color: var(--bright);
   }
 
   input {
@@ -11,12 +11,12 @@ div {
     outline: none;
     background-color: transparent;
     border: none;
-    border-bottom: 2px solid var(--pastelGray);
-    color: var(--textColor);
+    border-bottom: 2px solid var(--bright);
+    color: var(--bright);
   }
   
   input:not(.error):focus {
-    border-bottom-color: #FFFFFFFF;
+    border-bottom-color: var(--skyBlue);
   }
   
   input.error {

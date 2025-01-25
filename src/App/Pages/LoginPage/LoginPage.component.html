@@ -1,7 +1,6 @@
 <div style="height: 100%">
   <Header></Header>
   <main>
-
     <form method="post" [formGroup]="loginForm" (submit)="Login($event)">
       <Heading>Login</Heading>
       <FormInput label="Username" [formControl]="loginForm.controls.username" [errorMessage]="AuthService.GetUsernameErrorMessage(loginForm.controls.username)"/>
