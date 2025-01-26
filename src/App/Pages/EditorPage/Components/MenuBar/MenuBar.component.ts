@@ -27,4 +27,25 @@ export class MenuBar {
       this.menus.get(i)!.Close();
     }
   }
+
+  OnHover(event: MouseEvent) {
+    let open: Menu|null = null;
+    for (let i = 0; i < this.menus.length; i++) {
+      if (this.menus.get(i)?.IsExpanded()) {
+        open = this.menus.get(i)!;
+        break;
+      }
+    }
+    const t = event.target as HTMLElement;
+    if (open === null || open.menuButton.nativeElement.parentElement!.contains(t)) {
+      return;
+    }
+    for (let i = 0; i < this.menus.length; i++) {
+      if (this.menus.get(i)?.menuButton.nativeElement.parentElement!.contains(t)) {
+        open.Close();
+        this.menus.get(i)?.Show();
+        return;
+      }
+    }
+  }
 }

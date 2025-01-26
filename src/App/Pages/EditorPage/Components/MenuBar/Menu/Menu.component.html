@@ -1,6 +1,5 @@
 <button [style]="isVisible() ? {borderBottomWidth: '0px'} : {}" class="p-[0.2rem] pl-2 pr-2 text-[0.9rem] w-full border-[0.1rem] border-transparent relative hover:border-skyBlue 
-hover:bg-darkBright" 
-(click)="OnClick($event)" #menuButton>{{heading}}
+hover:bg-darkBright" (click)="OnClick($event)" #menuButton>{{heading}}
   <div class="absolute min-w-[10rem] shadow-card border-[1px] border-skyBlue border-t-0 bg-darkBright" 
   [style]="{display: isVisible() ? 'block' : 'none', left: '-1px', top: top}">
     <div class="grid grid-cols-[auto_1fr]">

@@ -1,9 +1,9 @@
 <div class="flex">
-  <Menu heading="Project">
+  <Menu heading="Project" (mouseenter)="OnHover($event)">
     <MenuItem heading="New" (click)="Select($event, Action.MENU_ACTION_PROJECT_NEW)"></MenuItem>
     <MenuItem heading="Load" (click)="Select($event, Action.MENU_ACTION_PROJECT_LOAD)"></MenuItem>
   </Menu>
-  <Menu heading="View">
+  <Menu heading="View" (mouseenter)="OnHover($event)">
     <MenuItem heading="Reset Panels" (click)="Select($event, Action.MENU_ACTION_VIEW_RESET)"></MenuItem>
   </Menu>
 </div>

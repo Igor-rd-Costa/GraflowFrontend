@@ -21,8 +21,12 @@ export class Menu {
   OnClick(e: MouseEvent) {
     this.Show();
   }
+
+  IsExpanded() {
+    return this.isVisible();
+  }
   
-  private Show() {
+  Show() {
     this.isVisible.set(true);
     this.menuButton.nativeElement.classList.add('opened');
     this.buttonWidth.set(this.menuButton.nativeElement.getBoundingClientRect().width - 2 + "px");
