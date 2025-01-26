@@ -13,8 +13,7 @@ import { APIReturnFlags } from '../../App.component';
   selector: 'RegisterPage',
   standalone: true,
   imports: [Header, Heading, ReactiveFormsModule, FormInput, MainButton, SecondaryButton],
-  templateUrl: './RegisterPage.component.html',
-  styleUrl: './RegisterPage.component.css'
+  templateUrl: './RegisterPage.component.html'
 })
 export class RegisterPage {
   AuthService = AuthService;

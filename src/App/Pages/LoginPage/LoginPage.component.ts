@@ -13,7 +13,6 @@ import { SecondaryButton } from '../../Components/SecondaryButton/SecondaryButto
   standalone: true,
   imports: [Header, Heading, ReactiveFormsModule, FormInput, MainButton, SecondaryButton],
   templateUrl: './LoginPage.component.html',
-  styleUrl: './LoginPage.component.css'
 })
 export class LoginPage {
   AuthService = AuthService;

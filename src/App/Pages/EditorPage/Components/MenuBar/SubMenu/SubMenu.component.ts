@@ -5,7 +5,6 @@ import { Component, ContentChildren, ElementRef, Input, QueryList, Renderer2, si
   standalone: true,
   imports: [],
   templateUrl: './SubMenu.component.html',
-  styleUrl: './SubMenu.component.css'
 })
 export class SubMenu {
   @ViewChild('menuButton') menuButton!: ElementRef<HTMLButtonElement>;

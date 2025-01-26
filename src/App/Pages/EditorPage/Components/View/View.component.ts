@@ -7,7 +7,6 @@ import Engine from '../../../../Engine/Engine';
   standalone: true,
   imports: [EditorPanel],
   templateUrl: './View.component.html',
-  styleUrl: './View.component.css'
 })
 export class View implements AfterViewInit {
   @ViewChild('canvas') canvas!: ElementRef<HTMLCanvasElement>;

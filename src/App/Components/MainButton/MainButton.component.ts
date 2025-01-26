@@ -5,7 +5,6 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
   standalone: true,
   imports: [],
   templateUrl: './MainButton.component.html',
-  styleUrl: './MainButton.component.css'
 })
 export class MainButton {
   @Output() onClick = new EventEmitter<MouseEvent>();

@@ -1,11 +1,12 @@
-<div style="height: 100%">
+<div class="h-full">
   <Header></Header>
-  <main>
-    <form method="post" [formGroup]="loginForm" (submit)="Login($event)">
+  <main class="h-[calc(100dvh-3rem)] w-screen flex items-center justify-center">
+    <form method="post" class="w-[24rem] h-fit p-4 grid gap-y-2 grid-rows-[2rem_auto_auto_1fr] justify-items-center" 
+    [formGroup]="loginForm" (submit)="Login($event)">
       <Heading>Login</Heading>
-      <FormInput label="Username" [formControl]="loginForm.controls.username" [errorMessage]="AuthService.GetUsernameErrorMessage(loginForm.controls.username)"/>
-      <FormInput type="password" label="Password" [formControl]="loginForm.controls.password" [errorMessage]="AuthService.GetPasswordErrorMessage(loginForm.controls.password)"/>
-      <div class="buttons">
+      <FormInput class="mt-[1.5rem] w-full" label="Username" [formControl]="loginForm.controls.username" [errorMessage]="AuthService.GetUsernameErrorMessage(loginForm.controls.username)"/>
+      <FormInput class="w-full" type="password" label="Password" [formControl]="loginForm.controls.password" [errorMessage]="AuthService.GetPasswordErrorMessage(loginForm.controls.password)"/>
+      <div class="mt-[1.5rem] grid gap-y-4 w-full">
         <MainButton type="submit" [disabled]="!loginForm.valid">Login</MainButton>
         <SecondaryButton type="button" (onClick)="GoToRegisterPage()">Register</SecondaryButton>
       </div>

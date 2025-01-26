@@ -5,7 +5,6 @@ import { Component } from '@angular/core';
   standalone: true,
   imports: [],
   templateUrl: './Heading.component.html',
-  styleUrl: './Heading.component.css'
 })
 export class Heading {
 

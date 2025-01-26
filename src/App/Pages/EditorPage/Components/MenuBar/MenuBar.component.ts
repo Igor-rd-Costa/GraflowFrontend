@@ -14,7 +14,6 @@ export enum MenuAction {
   standalone: true,
   imports: [Menu, SubMenu, MenuItem],
   templateUrl: './MenuBar.component.html',
-  styleUrl: './MenuBar.component.css'
 })  
 export class MenuBar {
   Action = MenuAction;

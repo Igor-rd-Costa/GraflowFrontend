@@ -7,7 +7,6 @@ import { MenuAction, MenuBar } from '../MenuBar/MenuBar.component';
   standalone: true,
   imports: [AuthMenu, MenuBar],
   templateUrl: './EditorHeader.component.html',
-  styleUrl: './EditorHeader.component.css'
 })
 export class EditorHeader {
   @Output() menuSelect = new EventEmitter<MenuAction>();

@@ -5,8 +5,7 @@ import { Header } from "../../Components/Header/Header.component";
   selector: 'LandingPage',
   standalone: true,
   imports: [Header],
-  templateUrl: './LandingPage.component.html',
-  styleUrl: './LandingPage.component.css'
+  templateUrl: './LandingPage.component.html'
 })
 export class LandingPage {
 

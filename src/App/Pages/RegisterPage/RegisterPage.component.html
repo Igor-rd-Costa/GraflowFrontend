@@ -1,16 +1,18 @@
-<div style="height: 100%">
+<div class="h-full">
   <Header></Header>
-  <main>
-
-    <form method="post" [formGroup]="registerForm" (submit)="Register($event)">
+  <main class="h-[calc(100dvh-3rem)] w-screen flex items-center justify-center">
+    <form method="post" class="w-[24rem] h-fit p-4 grid gap-y-2 grid-rows-[2rem_auto_auto_1fr] justify-items-center" 
+    [formGroup]="registerForm" (submit)="Register($event)">
       <Heading>Register</Heading>
+      <p class="h-[20px] flex justify-center mt-2 text-[0.8rem] text-[#C00F]">
       @if (formErrorMessage() !== null) {
-        <p>{{formErrorMessage()}}</p>
-      }
-      <FormInput label="Username" [formControl]="registerForm.controls.username" [errorMessage]="AuthService.GetUsernameErrorMessage(registerForm.controls.username)"/>
-      <FormInput label="Email" [formControl]="registerForm.controls.email" [errorMessage]="AuthService.GetEmailErrorMessage(registerForm.controls.email)"/>
-      <FormInput type="password" label="Password" [formControl]="registerForm.controls.password" [errorMessage]="AuthService.GetPasswordErrorMessage(registerForm.controls.password)"/>
-      <div id="button-wrapper">
+          {{formErrorMessage()}}
+        }
+      </p>
+      <FormInput class="mt-[1.5rem] w-full" label="Username" [formControl]="registerForm.controls.username" [errorMessage]="AuthService.GetUsernameErrorMessage(registerForm.controls.username)"/>
+      <FormInput class="w-full" label="Email" [formControl]="registerForm.controls.email" [errorMessage]="AuthService.GetEmailErrorMessage(registerForm.controls.email)"/>
+      <FormInput class="w-full" type="password" label="Password" [formControl]="registerForm.controls.password" [errorMessage]="AuthService.GetPasswordErrorMessage(registerForm.controls.password)"/>
+      <div class="mt-[1.5rem] grid gap-y-4 w-full">
         <MainButton type="submit" [disabled]="!registerForm.valid">Register</MainButton>
         <SecondaryButton type="button" (onClick)="GoToLoginPage()">Cancel</SecondaryButton>
       </div>

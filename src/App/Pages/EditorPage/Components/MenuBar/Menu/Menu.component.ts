@@ -5,8 +5,7 @@ import { SubMenu } from '../SubMenu/SubMenu.component';
   selector: 'Menu',
   standalone: true,
   imports: [],
-  templateUrl: './Menu.component.html',
-  styleUrl: './Menu.component.css'
+  templateUrl: './Menu.component.html'
 })
 export class Menu {
   @ViewChild('menuButton') menuButton!: ElementRef<HTMLButtonElement>;

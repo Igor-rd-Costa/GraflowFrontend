@@ -4,8 +4,7 @@ import { Component, Input } from '@angular/core';
   selector: 'MenuItem',
   standalone: true,
   imports: [],
-  templateUrl: './MenuItem.component.html',
-  styleUrl: './MenuItem.component.css'
+  templateUrl: './MenuItem.component.html'
 })
 export class MenuItem {
   @Input() icon: string|null = null;

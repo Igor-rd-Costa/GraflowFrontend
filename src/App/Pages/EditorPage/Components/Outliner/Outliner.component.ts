@@ -6,7 +6,6 @@ import { EditorPanel } from '../EditorPanel/EditorPanel.component';
   standalone: true,
   imports: [EditorPanel],
   templateUrl: './Outliner.component.html',
-  styleUrl: './Outliner.component.css'
 })
 export class Outliner {
   protected heading = signal<string>("Outliner");

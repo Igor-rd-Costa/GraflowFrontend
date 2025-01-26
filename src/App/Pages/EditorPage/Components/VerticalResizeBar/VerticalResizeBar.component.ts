@@ -8,7 +8,6 @@ import { GlobalEventsService } from '../../../../Services/GlobalEventsService';
   standalone: true,
   imports: [],
   templateUrl: './VerticalResizeBar.component.html',
-  styleUrl: './VerticalResizeBar.component.css'
 })
 export class VerticalResizeBar implements AfterViewInit {
   @ViewChild('bar') bar! : ElementRef<HTMLElement>;

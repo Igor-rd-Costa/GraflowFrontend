@@ -1,63 +1,20 @@
-:root {
-  /* --mainColor: #00AEB1FF;
-  --mainColorBright: #00DEE1FF;
-  --darkColorDark: #111111FF;
-  --darkColor: #222222FF;
-  --darkColorBright: #525252FF;
-  --brightColor: #EEEEEEFF; */
-  --shadow: 2px 2px 2px 0px black;
-  --blue: #263A99FF;
-  --blueBright: #3549A8FF;
-  --skyBlue: #97B4DEFF;
-  --skyBlueBright: #B6D3FDFF;
-  --dark: #2A2829FF;
-  --darkBright: #3A3839FF;
-  --bright: #F0EBE5FF;
-  --pastelGray: #DCD0BEFF;
-}
+@import "tailwindcss";
 
-.rajdhani-light {
-  font-family: "Rajdhani", serif;
-  font-weight: 300;
-  font-style: normal;
-}
-
-.rajdhani {
-  font-family: "Rajdhani", serif;
-  font-weight: 400;
-  font-style: normal;
-}
-
-.rajdhani-medium {
-  font-family: "Rajdhani", serif;
-  font-weight: 500;
-  font-style: normal;
-}
-
-.rajdhani-semibold {
-  font-family: "Rajdhani", serif;
-  font-weight: 600;
-  font-style: normal;
-}
-
-.rajdhani-bold {
-  font-family: "Rajdhani", serif;
-  font-weight: 700;
-  font-style: normal;
-}
-
-* {
-  box-sizing: border-box;
-  padding: 0;
-  margin: 0;
-}
-
-ul {
-  list-style: none; 
+@theme {
+  --font-rajdhani: "Rajdhani", serif;
+  --shadow-card: 2px 2px 2px 0px black;
+  --color-blue: #263A99FF;
+  --color-blueBright: #3549A8FF;
+  --color-skyBlue: #97B4DEFF;
+  --color-skyBlueBright: #B6D3FDFF;
+  --color-dark: #2A2829FF;
+  --color-darkBright: #3A3839FF;
+  --color-bright: #F0EBE5FF;
+  --color-pastelGray: #DCD0BEFF;
 }
 
 .bg-main {
-  background: linear-gradient(to top right, var(--skyBlue) 30%, var(--skyBlueBright));
+  background-image: linear-gradient(to top right, #97B4DEFF 30%, #B6D3FDFF);
 }
 
 .material-symbols-outlined {
@@ -68,23 +25,4 @@ ul {
   'wght' 400,
   'GRAD' 0,
   'opsz' 24
-}
-
-body {
-  background-color: var(--dark);
-}
-
-body, button {
-  color: var(--bright);
-  border: none;
-}
-
-button {
-  font-size: inherit;
-  font-family: inherit;
-  font-weight: inherit;
-  background-color: transparent;
-  border: none;
-  cursor: pointer;
-  text-align: start;
 }

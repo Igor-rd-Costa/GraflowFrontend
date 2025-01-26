@@ -1,4 +1,5 @@
-<button type="button">
+<button type="button" class="grid grid-cols-[0.9rem_1fr] gap-x-[0.7rem] p-[0.2rem] pl-[0.3rem] pr-[0.3rem] text-[0.9rem] w-full 
+border-[0.1rem] border-transparent items-center hover:border-skyBlue hover:bg-[#585657FF]">
   @if (icon !== null) {
     @if (icon.startsWith('g.')) {
       <span class="material-symbols-outlined">
@@ -8,5 +9,5 @@
       <img [src]="icon">
     }
   }
-  <p>{{heading}}</p>
+  <p class="col-start-2">{{heading}}</p>
 </button>

@@ -5,8 +5,7 @@ import { EditorPanel } from '../EditorPanel/EditorPanel.component';
   selector: 'Timeline',
   standalone: true,
   imports: [EditorPanel],
-  templateUrl: './Timeline.component.html',
-  styleUrl: './Timeline.component.css'
+  templateUrl: './Timeline.component.html'
 })
 export class Timeline {
 }

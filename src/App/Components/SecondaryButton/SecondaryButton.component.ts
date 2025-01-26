@@ -4,8 +4,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
   selector: 'SecondaryButton',
   standalone: true,
   imports: [],
-  templateUrl: './SecondaryButton.component.html',
-  styleUrl: './SecondaryButton.component.css'
+  templateUrl: './SecondaryButton.component.html'
 })
 export class SecondaryButton {
   @Output() onClick = new EventEmitter<MouseEvent>();

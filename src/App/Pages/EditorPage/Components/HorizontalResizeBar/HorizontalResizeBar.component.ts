@@ -5,8 +5,7 @@ import { GlobalEventsService } from '../../../../Services/GlobalEventsService';
   selector: 'HorizontalResizeBar',
   standalone: true,
   imports: [],
-  templateUrl: './HorizontalResizeBar.component.html',
-  styleUrl: './HorizontalResizeBar.component.css'
+  templateUrl: './HorizontalResizeBar.component.html'
 })
 export class HorizontalResizeBar {
   @ViewChild('bar') bar! : ElementRef<HTMLElement>;

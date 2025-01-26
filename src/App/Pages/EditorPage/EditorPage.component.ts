@@ -72,7 +72,6 @@ function GetDefaultPanelDimensions(): EditorPanelsInfo {
   standalone: true,
   imports: [Outliner, View, Properties, Timeline, VerticalResizeBar, HorizontalResizeBar, EditorHeader, LoadProjectPopUp],
   templateUrl: './EditorPage.component.html',
-  styleUrl: './EditorPage.component.css'
 })
 export class EditorPage {
   @ViewChild('main') main!: ElementRef<HTMLElement>;

@@ -1,21 +1,24 @@
-<div id="load-project-pop-up" [style]="{display: isVisible() ? 'grid' : 'none'}">
+<div class="absolute top-2/4 left-2/4 -translate-x-2/4 -translate-y-2/4 w-[50vw] h-[25rem] bg-dark 
+shadow-card p-2 grid-cols-1 gap-y-4 border-[0.1rem] border-skyBlue z-[1]" [style]="{display: isVisible() ? 'grid' : 'none'}">
     @if (display() === 0) {
-        <div>
-            <Heading>Open Project</Heading>
-            <ul id="project-list">
+        <div class="w-full h-[24rem] grid gap-4 grid-rows-[2.5rem_1fr_3.5rem]">
+            <Heading class="col-start-1 uppercase">Open Project</Heading>
+            <ul class="p-2 gap-[0.3rem] grid w-[25rem] auto-rows-[3.5rem] overflow-scroll">
                 @for (project of projects(); track $index) {
-                    <li class="project-item" (click)="SelectProject($event, project)" (dblclick)="LoadSelectedProject()">
-                        <img>
+                    <li class="project-item grid select-none p-2 grid-cols-[auto_1fr] gap-4 cursor-pointer 
+                    border-[1px] border-transparent hover:bg-[#2A2A2AFF]" 
+                    (click)="SelectProject($event, project)" (dblclick)="LoadSelectedProject()">
+                        <img class="w-[2.5rem] h-[2.5rem]">
                         <div>
-                            <span class="project-item-title">{{project.name}}</span>
+                            <span>{{project.name}}</span>
                             <br>
-                            <span class="project-item-date">{{project.lastAccessDate.toDateString()}}</span>
+                            <span class="text-[0.8rem]">{{project.lastAccessDate.toDateString()}}</span>
                         </div>
                     </li>
                 }
             </ul>
             
-            <div id="button-bar">
+            <div class="flex gap-4 p-2">
                 <MainButton type="button" [disabled]="selectedProjectItem === null" (click)="LoadSelectedProject()">Load</MainButton>
                 <MainButton type="button" [disabled]="selectedProjectItem === null" (click)="DeleteSelectedProject()">Delete</MainButton>
                 <MainButton type="button" (onClick)="SetDisplay(LoadProjectPopUpDisplay.DISPLAY_CREATE)">New Project</MainButton>
@@ -23,11 +26,11 @@
             </div>
         </div>
     } @else {
-        <form [formGroup]="createProjectForm" (submit)="Create($event)">
+        <form class="w-2/4 h-[24rem] col-start-1 col-end-3 grid grid-rows-[2.5rem_1fr_3.5rem] gap-y-4" [formGroup]="createProjectForm" (submit)="Create($event)">
             <Heading>Create Project</Heading>
             <FormInput label="Name" [formControl]="createProjectForm.controls.name"/>
             
-            <div id="button-bar">
+            <div class="flex gap-4 p-2">
                 <MainButton type="submit" [disabled]="!createProjectForm.valid">Create</MainButton>
                 <MainButton type="button" (onClick)="SetDisplay(LoadProjectPopUpDisplay.DISPLAY_LOAD)">Load</MainButton>
                 <SecondaryButton type="button" (onClick)="Hide()">Cancel</SecondaryButton>

@@ -6,7 +6,6 @@ import { EditorPanel } from '../EditorPanel/EditorPanel.component';
   standalone: true,
   imports: [EditorPanel],
   templateUrl: './Properties.component.html',
-  styleUrl: './Properties.component.css'
 })
 export class Properties {
 }

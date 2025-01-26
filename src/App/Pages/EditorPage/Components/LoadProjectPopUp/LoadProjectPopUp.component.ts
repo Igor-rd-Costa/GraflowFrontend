@@ -15,7 +15,12 @@ enum LoadProjectPopUpDisplay {
   standalone: true,
   imports: [Heading, FormInput, ReactiveFormsModule, MainButton, SecondaryButton],
   templateUrl: './LoadProjectPopUp.component.html',
-  styleUrl: './LoadProjectPopUp.component.css'
+  styles: `
+    .selected {
+      background-color: #333333FF;
+      border: 1px solid var(--color-skyBlue);
+    }
+  `
 })
 export class LoadProjectPopUp {
   LoadProjectPopUpDisplay = LoadProjectPopUpDisplay;

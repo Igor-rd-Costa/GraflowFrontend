@@ -1,8 +1,8 @@
-<header>
-  <div>
-    <button id="logo" (click)="GoToMainPage()">Graflow</button>
+<header class="grid grid-cols-[auto_75%_auto] grid-rows-1 h-[3rem] font-medium pl-[max(5vw,2rem)] pr-[max(5vw,2rem)]">
+  <div class="col-start-2 grid grid-cols-[auto_1fr_auto] gap-x-8 pt-2 w-full">
+    <button class="text-[2rem] col-start-1 border-none bg-transparent cursor-pointer hover:text-white" (click)="GoToMainPage()">Graflow</button>
     
-    <div id="auth-anchors">
+    <div class="flex gap-4 text-[1.2rem] col-start-3">
       <MainButton type="button" (onClick)="GoToLoginPage()">Login</MainButton>
       <MainButton type="button" (onClick)="GoToRegisterPage()">Register</MainButton>
     </div>

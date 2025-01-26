@@ -8,7 +8,6 @@ import { App } from '../../App.component';
   standalone: true,
   imports: [MainButton],
   templateUrl: './Header.component.html',
-  styleUrl: './Header.component.css'
 })
 export class Header {
 

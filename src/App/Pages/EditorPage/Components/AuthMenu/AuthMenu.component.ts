@@ -1,4 +1,4 @@
-import { Component, signal } from '@angular/core';
+import { Component, ElementRef, signal, ViewChild } from '@angular/core';
 import { AuthService } from '../../../../Services/AuthService';
 import { Router } from '@angular/router';
 
@@ -7,19 +7,16 @@ import { Router } from '@angular/router';
   standalone: true,
   imports: [],
   templateUrl: './AuthMenu.component.html',
-  styleUrl: './AuthMenu.component.css'
 })
 export class AuthMenu {
+  @ViewChild('authMenu') authMenu!: ElementRef<HTMLElement>;
   protected isVisible = signal(false);
   private static hideOnClickFn: ((event: MouseEvent) => void) | null = null;
 
-  public constructor(private authService: AuthService, private router: Router) {
-  }
+  public constructor(private authService: AuthService, private router: Router) {}
 
   Show() {
     this.isVisible.set(true);
-    const button = document.getElementById('auth-menu');
-    button?.classList.add('selected');
     if (AuthMenu.hideOnClickFn === null) {
       AuthMenu.hideOnClickFn = this.HideOnOutClick.bind(this);
     }
@@ -41,7 +38,7 @@ export class AuthMenu {
       return;
     }
     const target = event.target as HTMLElement;
-    if (target.closest('#auth-menu') === null) {
+    if (!this.authMenu.nativeElement.contains(target)) {
       this.Hide();
     }
   }
