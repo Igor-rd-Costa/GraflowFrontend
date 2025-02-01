@@ -1,3 +1,69 @@
 <EditorPanel [heading]="heading()">
-
+  <div class="pl-[0.35rem] pt-[0.35rem] justify-center flex gap-x-1 select-none">
+    <button class="h-[2rem] w-[2rem] flex items-center justify-center 
+    cursor-pointer border-[#666F] hover:border hover:text-white" (click)="Test()">
+    </button>
+    <button class="h-[2rem] w-[2rem] flex items-center justify-center 
+    cursor-pointer border-[#666F] hover:border hover:text-white">
+    </button>
+    <button class="h-[2rem] w-[2rem] flex items-center justify-center 
+    cursor-pointer border-[#666F] hover:border hover:text-white">
+    </button>
+    <button class="h-[2rem] w-[2rem] flex items-center justify-center 
+    cursor-pointer border-[#666F] hover:border hover:text-white">
+    </button>
+    <button class="h-[2rem] w-[2rem] flex items-center justify-center 
+    cursor-pointer border-[#666F] hover:border hover:text-white">
+    </button>
+    <button class="h-[2rem] w-[2rem] flex items-center justify-center 
+    cursor-pointer border-[#666F] hover:border hover:text-white">
+    </button>
+    <button class="h-[2rem] w-[2rem] flex items-center justify-center 
+    cursor-pointer border-[#666F] hover:border hover:text-white">
+    </button>
+  </div>
+  <div class="p-[0.35rem] select-none">
+    <div class="grid grid-cols-[auto_auto_1fr] items-center">
+      <div class="h-[1.4rem] w-[1.4rem] border-r border-[#666F] flex items-center justify-center">
+        <button class="h-[1.5rem] w-[1.5rem] flex justify-center items-center cursor-pointer hover:text-white" (click)="GoToHomeFolder()">
+          <span class="material-symbols-outlined text-[1.5rem]">
+            home
+          </span>
+        </button>
+      </div>
+      <div class="h-[1.4rem] w-[1.4rem] flex items-center justify-center">
+        <button class="h-[1.5rem] w-[1.5rem] flex justify-center items-center cursor-pointer hover:text-white" (click)="BackFolder()">
+          <span class="material-symbols-outlined text-[1.5rem]">
+            arrow_back
+          </span>
+        </button>
+      </div>
+      <div class="h-[1.4rem]">
+        <div class="border border-[#555F] bg-[#333F] h-full text-[0.8rem] grid items-center">
+          <span [title]="GetFolderPathString()" class="pl-1 h-fit truncate">
+            {{GetFolderPathString()}}
+          </span>
+        </div>
+      </div>
+    </div>
+    <div class="pt-[0.35rem]">
+      <div class="grid grid-cols-[auto_1fr] items-center bg-[#444F]">
+          <button class="h-[1.4rem] w-[1.4rem] flex justify-center items-center border border-[#666F] cursor-pointer hover:text-white" (click)="GoToHomeFolder()">
+            <span class="material-symbols-outlined text-[1.4rem]">
+              search
+            </span>
+          </button>
+        <input type="text" class="h-[1.4rem] pl-1 w-full border border-l-0 border-[#666F] text-[0.8rem] outline-none">
+      </div>
+    </div>
+  </div>
+<div [style]="{gridTemplateColumns: 'repeat('+colCount+', 83px)'}" class="w-full h-full p-2 grid gap-2 auto-rows-[83px]" 
+  (mousedown)="OnMouseDown($event)" (contextmenu)="PreventCM($event)" #outliner>
+    @for (file of projectFolders; track $index) {
+      <OutlinerItem (select)="OnItemSelect($event)" (dblclick)="OpenFolder(file.id)" [name]="file.name" type="folder"/>
+    }
+    @for (file of projectFiles; track $index) {
+      <OutlinerItem (select)="OnItemSelect($event)" [name]="file.name" type="file"/>
+    }
+  </div>
 </EditorPanel>

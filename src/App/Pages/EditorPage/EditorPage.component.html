@@ -2,7 +2,7 @@
   <EditorHeader (menuSelect)="OnMenuSelect($event)"/>
   <main class="grid p-2 max-w-screen max-h-[calc(100vh-2rem)]" [style]="{gridTemplateColumns: dimension.outlinerPanel.size.w+'px 0.5rem ' + dimension.viewPanel.size.w + 'px 0.5rem '+ dimension.propertiesPanel.size.w + 'px',
     gridTemplateRows: dimension.viewPanel.size.h + 'px 0.5rem '+ dimension.timelinePanel.size.h + 'px'}" #main>
-    <Outliner style="grid-column-start: 1; grid-row-start: 1; grid-row-end: 4;"/>
+    <Outliner [colCount]="outlinerCols()" style="grid-column-start: 1; grid-row-start: 1; grid-row-end: 4;"/>
     <VerticalResizeBar (resize)="OnOutlinerViewResize($event)" style="grid-column-start: 2; grid-row-start: 1; grid-row-end: 4;"/>
     <View style="grid-column-start: 3; grid-row-start: 1;"/>
     <VerticalResizeBar (resize)="OnViewPropertiesResize($event)" style="grid-column-start: 4; grid-row-start: 1; grid-row-end: 4;"/>
@@ -11,4 +11,5 @@
     <Timeline style="grid-column-start: 3; grid-row-start: 3;"/> 
   </main>
 </div>
+<ContextMenu/>
 <LoadProjectPopUp/>

@@ -1,0 +1,22 @@
+<div class="w-[83px] h-[83px] text-center leading-4 hover:bg-[#B6D3FD22] cursor-pointer select-none 
+border border-transparent text-[0.9rem] grid justify-items-center items-center break-all" 
+(contextmenu)="PreventCM($event)" (mousedown)="OnClick($event)" #item>
+  <div class="text-[2.8rem] w-[2.8rem] h-[2.8rem] flex justify-center">
+    <span class="material-symbols-outlined h-[2.8rem] w-[2.8rem]">
+      @switch (type) {
+        @case ('folder') {
+          folder
+        }
+        @case ('image') {
+          draft
+        }
+        @case ('file') {
+          draft
+        }
+      }
+    </span>
+  </div>
+  <div [title]="name+'.'+extension" class="break-all w-full truncate">
+    {{name}}
+  </div>
+</div>

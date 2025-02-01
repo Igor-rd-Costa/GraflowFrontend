@@ -1,9 +1,5 @@
-import { Component, isDevMode, NgModule } from '@angular/core';
-import { Router, RouterOutlet } from '@angular/router';
-import { AuthService } from './Services/AuthService';
-import { GlobalEventsService } from './Services/GlobalEventsService';
-import { EngineService } from './Services/EngineService';
-import { ProjectService } from './Services/ProjectService';
+import { Component, isDevMode } from '@angular/core';
+import { RouterOutlet } from '@angular/router';
 
 export enum APIReturnFlags {
   SUCCESS =               0b000001,
@@ -25,5 +21,9 @@ export class App {
 
   static Backend() {
     return this.backend;
+  }
+
+  static PreventContextMenu(event: Event) {
+    event.preventDefault();
   }
 }

@@ -1,0 +1,13 @@
+@defer (when isVisible()) {}
+<menu [style]="{display: isVisible() ? 'grid' : 'none', top: position().y + 'px', left: position().x + 'px'}" 
+class="min-w-[8rem] w-fit h-fit min-h-[2rem] grid auto-rows-[2rem] bg-dark shadow-card border border-skyBlue absolute"
+(contextmenu)="PreventCM($event)" #menu>
+  @for (item of items(); track $index) {
+    @if (item.items) {
+
+    } @else if (item.callback) {
+      <div class="h-full w-full flex items-center pl-2 cursor-pointer hover:bg-darkBright" 
+      (click)="OnItemClick($event, item.callback, item.closeOnCallback)">{{item.heading}}</div>
+    }
+  }
+</menu>

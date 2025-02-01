@@ -1,6 +1,6 @@
 import { Component, signal } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { Project, ProjectService } from '../../../../Services/ProjectService';
+import { Project, ProjectInfo, ProjectService } from '../../../../Services/ProjectService';
 import { Heading } from "../../../../Components/Heading/Heading.component";
 import { FormInput } from "../../../../Components/FormInput/FormInput.component";
 import { MainButton } from '../../../../Components/MainButton/MainButton.component';
@@ -24,9 +24,9 @@ enum LoadProjectPopUpDisplay {
 })
 export class LoadProjectPopUp {
   LoadProjectPopUpDisplay = LoadProjectPopUpDisplay;
-  protected selectedProjectItem: {project: Project, element: HTMLLIElement}|null = null;
+  protected selectedProjectItem: {project: ProjectInfo, element: HTMLLIElement}|null = null;
   protected isVisible = signal(false);
-  protected projects = signal<Project[]>([]);
+  protected projects = signal<ProjectInfo[]>([]);
   protected display = signal<LoadProjectPopUpDisplay>(LoadProjectPopUpDisplay.DISPLAY_LOAD);
   protected createProjectForm = new FormGroup({
     name: new FormControl('', {validators: [Validators.required]})
@@ -92,7 +92,7 @@ export class LoadProjectPopUp {
     }
   }
 
-  protected SelectProject(event: MouseEvent, project: Project) {
+  protected SelectProject(event: MouseEvent, project: ProjectInfo) {
     const target = (event.target as HTMLElement).closest('.project-item') as HTMLLIElement | null;
     if (target === null) {
       return;

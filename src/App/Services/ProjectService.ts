@@ -1,13 +1,38 @@
 import { HttpClient } from "@angular/common/http";
-import { Injectable } from "@angular/core";
+import { Injectable, signal } from "@angular/core";
 import { App } from "../App.component";
+import { v4 } from 'uuid'
 
-export type Project = {
+export type ProjectInfo = {
   id: string,
   name: string,
   creationDate: Date,
   lastAccessDate: Date
 }
+
+export type ProjectFolder = {
+  id: string,
+  parentId: string|null,
+  name: string
+}
+
+export type ProjectFile = {
+  id: string,
+  parentId: string|null,
+  name: string,
+  extension?: string
+}
+
+export type ProjectAssets = {
+  folders: ProjectFolder[],
+  files: ProjectFile[]
+}
+
+export type ProjectTimeline = {
+
+}
+
+export type Project = {info: ProjectInfo|null, assets: ProjectAssets, timeline: ProjectTimeline}
 
 export type ProjectCreateInfo = {
   name: string
@@ -16,27 +41,38 @@ export type ProjectCreateInfo = {
 @Injectable()
 export class ProjectService {
   private address = App.Backend()+"project/";
-  private projects: Project[] = [];
-  private loadedProject: Project|null = null;
+  private projects: ProjectInfo[] = [];
+
+  private projectInfo = signal<ProjectInfo|null>(null);
+  private projectAssets = signal<ProjectAssets|null>(null);
+  private projectTimeline = signal<ProjectTimeline|null>(null);
 
   public constructor(private http: HttpClient) {
     const loadedProject = sessionStorage.getItem('loadedProject');
     if (loadedProject === null) {
       return;
     }
-    const proj: Project = JSON.parse(loadedProject);
-    this.loadedProject = proj;
+    const proj: ProjectInfo = JSON.parse(loadedProject);
+    this.projectInfo.set(proj);
+    this.projectAssets.set({
+      folders: [],
+      files: []
+    });
   }
 
-  Project(): Project|null {
-    return this.loadedProject;
+  Project(): ProjectInfo|null {
+    return this.projectInfo();
+  }
+
+  Assets(): ProjectAssets|null {
+    return this.projectAssets();
   }
 
   async LoadProject(id: string): Promise<boolean> {
     for (let i = 0; i < this.projects.length; i++) {
       if (this.projects[i].id === id) {
-        this.loadedProject = {...this.projects[i]};
-        sessionStorage.setItem('loadedProject', JSON.stringify(this.loadedProject));
+        this.projectInfo.set({...this.projects[i]});
+        sessionStorage.setItem('loadedProject', JSON.stringify(this.projectInfo()));
         return true;
       }
     }
@@ -44,14 +80,14 @@ export class ProjectService {
     if (proj === null) {
       return false;
     }
-    this.loadedProject = proj;
-    sessionStorage.setItem('loadedProject', JSON.stringify(this.loadedProject));
+    this.projectInfo.set(proj);
+    sessionStorage.setItem('loadedProject', JSON.stringify(this.projectInfo()));
     return true;
   }
 
   GetProjects() {
-    return new Promise<Project[]>(resolve => {
-      this.http.get<Project[]>(this.address, {withCredentials: true}).subscribe({
+    return new Promise<ProjectInfo[]>(resolve => {
+      this.http.get<ProjectInfo[]>(this.address, {withCredentials: true}).subscribe({
         next: projects => {
           for (let i = 0; i < projects.length; i++) {
             const project = projects[i];
@@ -70,8 +106,8 @@ export class ProjectService {
   }
 
   GetProject(id: string) {
-    return new Promise<Project|null>(resolve => {
-      this.http.get<Project>(this.address+`id=${id}`, {withCredentials: true}).subscribe({
+    return new Promise<ProjectInfo|null>(resolve => {
+      this.http.get<ProjectInfo>(this.address+`id=${id}`, {withCredentials: true}).subscribe({
         next: project => {
           project.lastAccessDate = new Date(project.lastAccessDate);
           project.creationDate = new Date(project.creationDate);
@@ -81,7 +117,7 @@ export class ProjectService {
           console.error(err);
           resolve(null);
         }
-      })
+      });
     });
   }
 
@@ -90,7 +126,7 @@ export class ProjectService {
       this.http.post<string>(this.address, info, {withCredentials: true}).subscribe({
         next: id => {
           const now = new Date(Date.UTC(Date.now()));
-          this.loadedProject = { id: id, name: info.name, creationDate: now, lastAccessDate: now };
+          this.projectInfo.set({ id: id, name: info.name, creationDate: now, lastAccessDate: now });
           resolve(true);
         },
         error: err => {
@@ -113,5 +149,73 @@ export class ProjectService {
         }
       });
     });
+  }
+
+  CreateFolder(parentFolder: string|null) {
+    if (this.projectAssets() === null) {
+      return null;
+    }
+    const assets = this.projectAssets()!;
+    const folders = assets.folders;
+    const id = v4();
+    let folderNameBase = "New Folder";
+    let folderName = folderNameBase;
+    let folderNumber = 1;
+    for (let i = 0; i < folders.length; i++) {
+      if (folders[i].parentId === parentFolder && folderName === folders[i].name) {
+        folderName = folderNameBase + `(${folderNumber})`;
+        folderNumber++;
+        i = -1;
+      }
+    }
+    folders.push({
+      id: id,
+      parentId: parentFolder,
+      name: folderName,
+    });
+    this.projectAssets.set({
+      folders: folders,
+      files: assets.files
+    });
+    return id;
+  }
+
+  async DeleteFolder(folderId: string) : Promise<boolean> {
+    if (this.projectAssets() === null) {
+      return false;
+    }
+    const assets = this.projectAssets()!;
+    const folders = assets.folders;
+    const files = assets.files;
+    let childFolderCount = 0;
+    let childFileCount = 0;
+    let folderIndex = -1;
+    for (let i = 0; i < folders.length; i++) {
+      if (folders[i].parentId == folderId) {
+        childFolderCount++;
+      }
+      if (folders[i].id === folderId) {
+        folderIndex = i;
+      }
+    }
+    if (folderIndex === -1) {
+      return false;
+    } 
+    for (let i = 0; i < files.length; i++) {
+      if (files[i].parentId === folderId) {
+        childFileCount++;
+      }
+    }
+    if (childFolderCount !== 0 || childFileCount !== 0) {
+      //TODO await confirmation and delete child folders and files;
+      console.error("Folder not empty. Behavior not implemented");
+      return false;
+    }
+    folders.splice(folderIndex, 1);
+    this.projectAssets.set({
+      folders: folders,
+      files: files
+    });
+    return true;
   }
 }
