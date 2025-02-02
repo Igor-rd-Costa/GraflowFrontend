@@ -168,16 +168,36 @@ export class ProjectService {
         i = -1;
       }
     }
-    folders.push({
+    const folder = {
       id: id,
       parentId: parentFolder,
       name: folderName,
-    });
+    };
+    folders.push(folder);
     this.projectAssets.set({
       folders: folders,
       files: assets.files
     });
-    return id;
+    return folder;
+  }
+
+  AddFolder(folder: ProjectFolder) {
+    if (this.projectAssets() === null) {
+      return;
+    }
+    const assets = this.projectAssets()!;
+    const folders = assets.folders;
+    for (let i = 0; i < folders.length; i++) {
+      if (folders[i].id === folder.id) {
+        return;
+      }
+    }
+    folders.push(folder);
+    this.projectAssets.set({
+      folders: folders,
+      files: assets.files
+    });
+    return;
   }
 
   async DeleteFolder(folderId: string) : Promise<boolean> {
@@ -217,5 +237,36 @@ export class ProjectService {
       files: files
     });
     return true;
+  }
+
+  RenameFolder(folderId: string, newName: string) {
+    const assets = this.projectAssets();
+    if (assets === null) {
+      return;
+    }
+    const folders = assets.folders;
+    const baseName = newName;
+    let name = baseName;
+    let nameCount = 1;
+    let renameIndex = -1;
+    for (let i = 0; i < folders.length; i++) {
+      if (folders[i].id === folderId) {
+        renameIndex = i;
+      }
+    }
+    if (renameIndex === -1) {
+      return;
+    }
+    for (let i = 0; i < folders.length; i++) {
+      if (folders[i].name === name && folders[i].parentId === folders[renameIndex].parentId) {
+        name = baseName + `(${nameCount++})`;
+        i = -1;
+      }
+    }
+    folders[renameIndex].name = name;
+  }
+
+  RenameFile(itemId: string, newName: string) {
+
   }
 }

@@ -1,7 +1,7 @@
 <EditorPanel [heading]="heading()">
   <div class="pl-[0.35rem] pt-[0.35rem] justify-center flex gap-x-1 select-none">
     <button class="h-[2rem] w-[2rem] flex items-center justify-center 
-    cursor-pointer border-[#666F] hover:border hover:text-white" (click)="Test()">
+    cursor-pointer border-[#666F] hover:border hover:text-white">
     </button>
     <button class="h-[2rem] w-[2rem] flex items-center justify-center 
     cursor-pointer border-[#666F] hover:border hover:text-white">
@@ -57,13 +57,13 @@
       </div>
     </div>
   </div>
-<div [style]="{gridTemplateColumns: 'repeat('+colCount+', 83px)'}" class="w-full h-full p-2 grid gap-2 auto-rows-[83px]" 
-  (mousedown)="OnMouseDown($event)" (contextmenu)="PreventCM($event)" #outliner>
+<div [style]="{gridTemplateColumns: 'repeat('+colCount+', 83px)'}" class="w-full h-full p-2 grid gap-2 auto-rows-[83px] outline-none" 
+  (mousedown)="OnMouseDown($event)" (keydown)="OnKeyDown($event)" (contextmenu)="PreventCM($event)" tabindex="-1" #outliner>
     @for (file of projectFolders; track $index) {
-      <OutlinerItem (select)="OnItemSelect($event)" (dblclick)="OpenFolder(file.id)" [name]="file.name" type="folder"/>
+      <OutlinerItem [id]="file.id" [name]="file.name" type="folder" (select)="OnItemSelect($event)" (dblclick)="OpenFolder(file.id)"/>
     }
     @for (file of projectFiles; track $index) {
-      <OutlinerItem (select)="OnItemSelect($event)" [name]="file.name" type="file"/>
+      <OutlinerItem [id]="file.id" [name]="file.name" type="file" (select)="OnItemSelect($event)" />
     }
   </div>
 </EditorPanel>

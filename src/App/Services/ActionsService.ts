@@ -1,21 +1,29 @@
+export type ActionStatus = {
+  saveAction: boolean,
+  returnVal?: any
+}
+
+type ActionDoFn = (redoVal?: any) => (ActionStatus|Promise<ActionStatus>);
+type ActionUndoFn = (doReturnVal: any) => (boolean|Promise<boolean>)
+
 class Action {
-  private doValue;
-  private do: () => any;
-  private undo: (doValue: any) => boolean|Promise<boolean>;
+  private doValue: any;
+  private do: ActionDoFn;
+  private undo: ActionUndoFn;
 
-  constructor(doFn: () => any, undoFn: (doValue: any) => boolean|Promise<boolean>) {
-
+  constructor(doFn: ActionDoFn, undoFn: ActionUndoFn) {
     this.do = doFn;
     this.undo = undoFn;
-    this.doValue = this.do();
   }
 
   async Undo() {
     await this.undo(this.doValue);
   }
 
-  Do() {
-    this.doValue = this.do();
+  async Do(): Promise<boolean> {
+    const status = await this.do(this.doValue);
+    this.doValue = status.returnVal;
+    return status.saveAction;
   }
 }
 
@@ -25,24 +33,29 @@ export default class ActionsService {
 
   constructor() {}
 
-  RegisterAction(doFn: () => void, undoFn: (doValue: any) => (boolean|Promise<boolean>)) {
-    this.actions.push(new Action(doFn, undoFn));
+  async RegisterAction(doFn: ActionDoFn, undoFn: ActionUndoFn) {
+    const a = new Action(doFn, undoFn);
+    const shouldSave = await a.Do();
+    if (shouldSave) {
+      this.actions.push(a);
+    }
   }
 
   async Undo() {
     const a = this.actions.pop();
-    console.log("undo got", a);
     if (a) {
       await a.Undo();
       this.undoActions.push(a);
     }
   }
 
-  Redo() {
+  async Redo() {
     const a = this.undoActions.pop();
     if (a) {
-      a.Do();
-      this.actions.push(a);
+      const shouldSave = await a.Do();
+      if (shouldSave) {
+        this.actions.push(a);
+      }
     }
   }
 }

@@ -53,15 +53,15 @@ export class ContextMenu {
 
   Show(items: ContextMenuItem[], x: number, y: number) {
     this.items.set(items);
-    this.position.set({x, y});
+    this.position.set({x: x + 5, y: y + 5});
     this.isVisible.set(true);
-    const onGlobalCLick = (event: MouseEvent) => {
+    const onGlobalCLick = ((event: MouseEvent) => {
       if (event.target == null || this.menu.nativeElement.contains(event.target as HTMLElement)) {
         return;
       }
       this.Hide();
       document.removeEventListener('mousedown', onGlobalCLick);
-    };
+    }).bind(this);
     document.addEventListener('mousedown', onGlobalCLick);
   }
 

@@ -207,7 +207,6 @@ export class EditorPage {
 
   OnWindowKeyDown(event: KeyboardEvent) {
     if (event.ctrlKey) {
-      console.log(event.key);
       if (event.key === "z") {
         this.actionsService.Undo();
         return;

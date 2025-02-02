@@ -1,6 +1,6 @@
 <div class="w-[83px] h-[83px] text-center leading-4 hover:bg-[#B6D3FD22] cursor-pointer select-none 
-border border-transparent text-[0.9rem] grid justify-items-center items-center break-all" 
-(contextmenu)="PreventCM($event)" (mousedown)="OnClick($event)" #item>
+border border-transparent text-[0.9rem] grid justify-items-center items-center break-all outline-none"
+(contextmenu)="PreventCM($event)" (mousedown)="OnClick($event)" (keydown)="OnKeyDown($event)" tabindex="-1" #item>
   <div class="text-[2.8rem] w-[2.8rem] h-[2.8rem] flex justify-center">
     <span class="material-symbols-outlined h-[2.8rem] w-[2.8rem]">
       @switch (type) {
@@ -16,7 +16,12 @@ border border-transparent text-[0.9rem] grid justify-items-center items-center b
       }
     </span>
   </div>
-  <div [title]="name+'.'+extension" class="break-all w-full truncate">
-    {{name}}
+  <div class="w-[83px] pl-1 pr-1">
+    <div [style]="isInRenameMode() ? {border: '1px solid #AAAF', overflow: 'scroll', color: 'white'} 
+    : {overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap'}"  
+    [title]="name + (type === 'folder' ? '' : '.'+extension)" class="break-all w-full max-h-[34px] outline-none" 
+    [contentEditable]="isInRenameMode()" (keydown)="OnNameKeyDown($event)" #nameField>
+    {{name.trim()}}
+  </div>
   </div>
 </div>
