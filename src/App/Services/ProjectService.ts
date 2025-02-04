@@ -273,7 +273,32 @@ export class ProjectService {
   }
 
   RenameFile(itemId: string, newName: string) {
-
+    const assets = this.projectAssets();
+    if (!assets) {
+      return;
+    }
+    const files = assets.files;
+    let renameIndex = -1;
+    for (let i = 0; files.length; i++) {
+      if (files[i].id === itemId) {
+        renameIndex = i;
+        break;
+      }
+    }
+    if (renameIndex === -1) {
+      return;
+    }
+    const baseName = newName;
+    let name = newName;
+    let nameCount = 1;
+    for (let i = 0; i < files.length; i++) {
+      if (files[i].name === name && files[i].parentId === files[renameIndex].parentId) {
+        name = baseName + `(${nameCount})`;
+        nameCount++;
+        i = -1;
+      }
+    }
+    files[renameIndex].name = name;
   }
 
   AddAsset(name: string, type: string, data: ArrayBuffer, size: number, parentId?: string|null, id?: string) {

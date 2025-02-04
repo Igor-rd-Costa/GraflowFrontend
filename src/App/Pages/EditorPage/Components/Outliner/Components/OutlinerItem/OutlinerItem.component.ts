@@ -86,6 +86,8 @@ export class OutlinerItem {
     if (type === 'folder') {
       this.projectService.RenameFolder(val['id'], val['oldName']);
       this.name = val['oldName'];
+    } else {
+      this.projectService.RenameFile(val['id'], val['oldName']);
     }
     return true;
   }
