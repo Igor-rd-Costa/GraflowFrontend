@@ -85,7 +85,6 @@ export class OutlinerItem {
 
   UndoRenameItem(val: any) {
     const type = val['type'];
-    console.log("Type:", type);
     if (!type) {
       return false;
     }
@@ -96,7 +95,6 @@ export class OutlinerItem {
     }
     this.name = val['oldName'];
     this.nameField.nativeElement.textContent = this.name;
-    console.log("Got here!", val['oldName'], this.id);
     return true;
   }
 

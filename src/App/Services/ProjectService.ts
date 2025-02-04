@@ -274,7 +274,6 @@ export class ProjectService {
   }
 
   RenameFile(itemId: string, newName: string): string|null {
-    console.log(`Rename ${itemId} to ${newName}`)
     const assets = this.projectAssets();
     if (!assets) {
       return null;
@@ -288,7 +287,6 @@ export class ProjectService {
       }
     }
     if (renameIndex === -1) {
-      console.log(`Could not find file ${itemId}`)
       return null;
     }
     const baseName = newName;

@@ -138,7 +138,6 @@ export class Outliner {
     a.type = 'file';
     a.onchange = async () => {
       const file = a.files![0];
-      console.log(file);
       this.actionsService.RegisterAction(this.DoImportItem(file), this.UndoImportItem.bind(this))
     }
     a.click();
