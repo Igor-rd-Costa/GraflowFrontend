@@ -20,12 +20,14 @@ export type ProjectFile = {
   id: string,
   parentId: string|null,
   name: string,
-  extension?: string
+  extension: string,
+  data: ArrayBuffer,
+  size: number
 }
 
 export type ProjectAssets = {
   folders: ProjectFolder[],
-  files: ProjectFile[]
+  files: ProjectFile[],
 }
 
 export type ProjectTimeline = {
@@ -273,4 +275,50 @@ export class ProjectService {
   RenameFile(itemId: string, newName: string) {
 
   }
+
+  AddAsset(name: string, type: string, data: ArrayBuffer, size: number, parentId?: string|null, id?: string) {
+    const assets = this.projectAssets();
+    if (!assets) {
+      return;
+    }
+    const files = assets.files;
+    if (!files) {
+      return;
+    }
+    if (!id) {
+      id = v4();
+    }
+    const file = {
+      id,
+      parentId: parentId ?? null,
+      name,
+      extension: type,
+      data,
+      size
+    };
+    files.push(file);
+    this.projectAssets.set({
+      folders: assets.folders,
+      files: files
+    });
+    return file;
+  }
+
+  RemoveAsset(id: string) {
+    const assets = this.projectAssets();
+    if (!assets) {
+      return;
+    }
+    const files = assets.files;
+    for (let i = 0; i < files.length; i++) {
+      if (files[i].id === id) {
+        files.splice(i, 1);
+        this.projectAssets.set({
+          folders: assets.folders,
+          files: files,
+        });
+        break;
+      }
+    }
+  } 
 }

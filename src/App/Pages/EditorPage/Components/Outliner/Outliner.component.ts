@@ -123,7 +123,7 @@ export class Outliner {
     if (event.button === 2) {
       event.stopPropagation();
       EditorPage.ContextMenu().Show([
-        {heading: 'Import File', callback: () => {}, closeOnCallback: true},
+        {heading: 'Import File', callback: this.ImportFileCallback.bind(this), closeOnCallback: true},
         {heading: 'Create Folder', callback: this.CreateFolderCallback.bind(this), closeOnCallback: true},
       ], event.clientX, event.clientY);
     }
@@ -131,6 +131,17 @@ export class Outliner {
 
   CreateFolderCallback() {
     this.actionsService.RegisterAction(this.DoCreateFolder.bind(this), this.UndoCreateFolder.bind(this));
+  }
+
+  ImportFileCallback() {
+    const a = document.createElement('input');
+    a.type = 'file';
+    a.onchange = async () => {
+      const file = a.files![0];
+      console.log(file);
+      this.actionsService.RegisterAction(this.DoImportItem(file), this.UndoImportItem.bind(this))
+    }
+    a.click();
   }
 
   DeleteFolderCallback(itemId: string, itemType: OutlinerItemType) {
@@ -147,6 +158,27 @@ export class Outliner {
         }
       }
     }
+  }
+
+  DoImportItem(file: File) {
+    return async (redoVal: any) => {
+      if (!redoVal) {
+        const data = await file.arrayBuffer();
+        const dot = file.name.lastIndexOf('.');
+        const name = file.name.substring(0, dot);
+        const ext = file.name.substring(dot + 1);
+        const id = this.projectService.AddAsset(name, ext, data, data.byteLength);
+        return {saveAction: true, returnVal: id};
+      }
+      const f = redoVal as ProjectFile;
+      const id = this.projectService.AddAsset(f.name, f.extension, f.data, f.size, f.parentId, f.id);
+      return {saveAction: true, returnVal: id};
+    }
+  }
+
+  UndoImportItem(val: any) {
+    this.projectService.RemoveAsset((val as ProjectFile).id);
+    return true;
   }
 
   DoCreateFolder(redoVal: any): ActionStatus {

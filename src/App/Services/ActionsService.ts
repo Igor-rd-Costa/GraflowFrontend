@@ -7,7 +7,7 @@ type ActionDoFn = (redoVal?: any) => (ActionStatus|Promise<ActionStatus>);
 type ActionUndoFn = (doReturnVal: any) => (boolean|Promise<boolean>)
 
 class Action {
-  private doValue: any;
+  private doValue: any = null;
   private do: ActionDoFn;
   private undo: ActionUndoFn;
 
