@@ -219,20 +219,29 @@ export class Outliner {
       return () => { return {saveAction: false } }
     }
     return (async () => {
-      if (itemType === 'folder') {
-        if (await this.projectService.DeleteFolder(itemId)) {
-          const status: ActionStatus = {
-            saveAction: true,
-            returnVal: item
-          }
-          return status;
-        };
+      const status: ActionStatus = {
+        saveAction: true,
+        returnVal: item
       }
-      return {saveAction: false}
+      if (itemType === 'folder') {
+        if (this.projectService.DeleteFolder(itemId)) {
+          return status;
+        }
+        return {saveAction: false};
+      }
+      if (this.projectService.RemoveAsset(itemId)) {
+        return status;
+      }
+      return {saveAction: false};
     }).bind(this);
   }
 
   UndoDeleteItem(val: any) {
+    if ((val as ProjectFile).extension !== undefined) {
+      const f = val as ProjectFile;
+      this.projectService.AddAsset(f.name, f.extension, f.data, f.size, f.parentId, f.id);
+      return true;
+    }
     this.projectService.AddFolder(val);
     return true;
   }

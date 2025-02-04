@@ -206,7 +206,7 @@ export class ProjectService {
     return;
   }
 
-  async DeleteFolder(folderId: string) : Promise<boolean> {
+  DeleteFolder(folderId: string) : boolean {
     if (this.projectAssets() === null) {
       return false;
     }
@@ -245,10 +245,10 @@ export class ProjectService {
     return true;
   }
 
-  RenameFolder(folderId: string, newName: string) {
+  RenameFolder(folderId: string, newName: string): string|null {
     const assets = this.projectAssets();
     if (assets === null) {
-      return;
+      return null;
     }
     const folders = assets.folders;
     const baseName = newName;
@@ -261,7 +261,7 @@ export class ProjectService {
       }
     }
     if (renameIndex === -1) {
-      return;
+      return null;
     }
     for (let i = 0; i < folders.length; i++) {
       if (folders[i].name === name && folders[i].parentId === folders[renameIndex].parentId) {
@@ -270,12 +270,14 @@ export class ProjectService {
       }
     }
     folders[renameIndex].name = name;
+    return name;
   }
 
-  RenameFile(itemId: string, newName: string) {
+  RenameFile(itemId: string, newName: string): string|null {
+    console.log(`Rename ${itemId} to ${newName}`)
     const assets = this.projectAssets();
     if (!assets) {
-      return;
+      return null;
     }
     const files = assets.files;
     let renameIndex = -1;
@@ -286,19 +288,21 @@ export class ProjectService {
       }
     }
     if (renameIndex === -1) {
-      return;
+      console.log(`Could not find file ${itemId}`)
+      return null;
     }
     const baseName = newName;
     let name = newName;
     let nameCount = 1;
     for (let i = 0; i < files.length; i++) {
-      if (files[i].name === name && files[i].parentId === files[renameIndex].parentId) {
+      if (files[i].name === name && files[i].parentId === files[renameIndex].parentId && files[i].id !== files[renameIndex].id) {
         name = baseName + `(${nameCount})`;
         nameCount++;
         i = -1;
       }
     }
     files[renameIndex].name = name;
+    return name;
   }
 
   AddAsset(name: string, type: string, data: ArrayBuffer, size: number, parentId?: string|null, id?: string) {
@@ -329,10 +333,10 @@ export class ProjectService {
     return file;
   }
 
-  RemoveAsset(id: string) {
+  RemoveAsset(id: string): boolean {
     const assets = this.projectAssets();
     if (!assets) {
-      return;
+      return false;
     }
     const files = assets.files;
     for (let i = 0; i < files.length; i++) {
@@ -342,8 +346,9 @@ export class ProjectService {
           folders: assets.folders,
           files: files,
         });
-        break;
+        return true;
       }
     }
+    return false;
   } 
 }

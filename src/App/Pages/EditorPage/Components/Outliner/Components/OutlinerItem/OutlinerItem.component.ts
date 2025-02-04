@@ -72,23 +72,31 @@ export class OutlinerItem {
   DoRenameItem(newName: string) {
     return (() => {
       const oldName = this.name;
-      this.type === 'folder' ? this.projectService.RenameFolder(this.id, newName)
+      const name = this.type === 'folder' ? this.projectService.RenameFolder(this.id, newName)
       : this.projectService.RenameFile(this.id, newName);
-      return {saveAction: true, returnVal: {id: this.id, type: this.type, oldName }}
+      if (name) {
+        this.name = name;
+        this.nameField.nativeElement.textContent = name;
+        return {saveAction: true, returnVal: {id: this.id, type: this.type, oldName }}
+      }
+      return {saveAction: false}
     });
   }
 
   UndoRenameItem(val: any) {
     const type = val['type'];
+    console.log("Type:", type);
     if (!type) {
       return false;
     }
     if (type === 'folder') {
       this.projectService.RenameFolder(val['id'], val['oldName']);
-      this.name = val['oldName'];
     } else {
       this.projectService.RenameFile(val['id'], val['oldName']);
     }
+    this.name = val['oldName'];
+    this.nameField.nativeElement.textContent = this.name;
+    console.log("Got here!", val['oldName'], this.id);
     return true;
   }
 
@@ -102,9 +110,6 @@ export class OutlinerItem {
     if (this.isInRenameMode()) {
       this.isInRenameMode.set(false);
     }
-  }
-
-  OnKeyDown(event: KeyboardEvent) {
   }
 
   OnNameKeyDown(event: KeyboardEvent) {
