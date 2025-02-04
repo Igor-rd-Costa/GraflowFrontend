@@ -72,6 +72,8 @@ export class ProjectService {
     for (let i = 0; i < this.projects.length; i++) {
       if (this.projects[i].id === id) {
         this.projectInfo.set({...this.projects[i]});
+        this.projectAssets.set({files: [], folders: []});
+        this.projectTimeline.set({});
         sessionStorage.setItem('loadedProject', JSON.stringify(this.projectInfo()));
         return true;
       }
@@ -81,6 +83,8 @@ export class ProjectService {
       return false;
     }
     this.projectInfo.set(proj);
+    this.projectAssets.set({files: [], folders: []});
+    this.projectTimeline.set({});
     sessionStorage.setItem('loadedProject', JSON.stringify(this.projectInfo()));
     return true;
   }
