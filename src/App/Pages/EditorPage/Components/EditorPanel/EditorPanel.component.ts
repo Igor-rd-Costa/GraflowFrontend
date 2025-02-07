@@ -7,6 +7,10 @@ import { Component, ElementRef, Input, ViewChild } from '@angular/core';
   templateUrl: './EditorPanel.component.html',
 })
 export class EditorPanel {
-  @ViewChild('panel') panel!: ElementRef<HTMLElement>;
+  @ViewChild('panel') private panel!: ElementRef<HTMLElement>;
   @Input() heading = "";
+
+  Element() {
+    return this.panel.nativeElement;
+  }
 }

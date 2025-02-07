@@ -13,7 +13,7 @@ export class View implements AfterViewInit {
   public constructor() {}
 
   async ngAfterViewInit(): Promise<void> {
-    
+    await this.Init();
   }
 
   async Init() {
@@ -29,5 +29,13 @@ export class View implements AfterViewInit {
     canvas.width = canvas.clientWidth * window.devicePixelRatio;
     canvas.height = canvas.clientHeight * window.devicePixelRatio;
     (0, eval)(script);
+  }
+
+  ResizeCanvas() {
+    const event = new UIEvent('resize');
+    const canvas = this.canvas.nativeElement;
+    canvas.width = canvas.clientWidth * window.devicePixelRatio;
+    canvas.height = canvas.clientHeight * window.devicePixelRatio;
+    canvas.dispatchEvent(event);
   }
 }

@@ -31,7 +31,7 @@ export type ProjectAssets = {
 }
 
 export type ProjectTimeline = {
-
+  duration: number // in seconds
 }
 
 export type Project = {info: ProjectInfo|null, assets: ProjectAssets, timeline: ProjectTimeline}
@@ -44,7 +44,7 @@ export type ProjectCreateInfo = {
 export class ProjectService {
   private address = App.Backend()+"project/";
   private projects: ProjectInfo[] = [];
-
+  private loadedProject: Project|null = null;
   private projectInfo = signal<ProjectInfo|null>(null);
   private projectAssets = signal<ProjectAssets|null>(null);
   private projectTimeline = signal<ProjectTimeline|null>(null);
@@ -56,13 +56,27 @@ export class ProjectService {
     }
     const proj: ProjectInfo = JSON.parse(loadedProject);
     this.projectInfo.set(proj);
+    this.loadedProject = {
+      info: proj,
+      assets: {
+        files: [],
+        folders: []
+      },
+      timeline: {
+        duration: 0
+      }
+    }
     this.projectAssets.set({
       folders: [],
       files: []
     });
   }
 
-  Project(): ProjectInfo|null {
+  Project():Project|null {
+    return this.loadedProject;
+  }
+
+  ProjectInfo(): ProjectInfo|null {
     return this.projectInfo();
   }
 
@@ -75,7 +89,12 @@ export class ProjectService {
       if (this.projects[i].id === id) {
         this.projectInfo.set({...this.projects[i]});
         this.projectAssets.set({files: [], folders: []});
-        this.projectTimeline.set({});
+        this.projectTimeline.set({duration: 0});
+        this.loadedProject = {
+          info: this.projectInfo(),
+          assets: {files: [], folders: []},
+          timeline: {duration: 0}
+        };
         sessionStorage.setItem('loadedProject', JSON.stringify(this.projectInfo()));
         return true;
       }
@@ -86,7 +105,12 @@ export class ProjectService {
     }
     this.projectInfo.set(proj);
     this.projectAssets.set({files: [], folders: []});
-    this.projectTimeline.set({});
+    this.projectTimeline.set({duration: 0});
+    this.loadedProject = {
+      info: this.projectInfo(),
+      assets: {files: [], folders: []},
+      timeline: {duration: 0}
+    };
     sessionStorage.setItem('loadedProject', JSON.stringify(this.projectInfo()));
     return true;
   }

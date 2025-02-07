@@ -1,3 +1,57 @@
 <EditorPanel heading="Timeline">
-  
+  <div [style]="{height: timelineHeight()}" class="w-full grid grid-rows-[2rem_1fr] overflow-hidden">
+    <div class="w-full pl-8 pr-8 bg-[#333F]">
+      <div class="w-full h-[2rem] p-1 flex justify-center items-center z-[1] border-b border-[#666F]">
+        @if (isPlaying()) {
+          <button class="w-[1.6rem] h-[1.6rem] text-[1.5rem] flex items-center justify-center border border-transparent cursor-pointer hover:border-[#666F]">
+            <span class="material-symbols-outlined">
+              pause
+            </span>
+          </button>
+        } @else {
+          <button class="w-[1.6rem] h-[1.6rem] text-[1.5rem] flex items-center justify-center border border-transparent cursor-pointer hover:border-[#666F]">
+            <span class="material-symbols-outlined">
+              play_arrow
+            </span>
+          </button>
+        }
+      </div>
+    </div>
+    <div class="relative w-full h-full grid grid-rows-[2rem_1fr_0.4rem] overflow-y-hidden overflow-x-scroll">
+      <div id="timeline-pointer" [style]="{left: (timelinePointerPos() - 6)+'px'}" 
+      class="w-[12px] h-full grid grid-rows-[12px_1fr] justify-items-center absolute top-[20px] z-[1]" 
+      (mouseenter)="OnPointerMouseEnter()" (mouseleave)="OnPointerMouseLeave()" #timelinePointer>
+        <svg width="12" height="12" (mousedown)="OnTimelineRulerMouseDown($event)">
+          <polygon points="0,0 12,0 6,12"></polygon>
+        </svg>
+        <div class="h-full w-[1px] relative"></div>
+      </div>
+      <div [style]="{minWidth: (timeSections().length * 8)+'rem'}" class="w-full h-full bg-[#2C2C2CFF]">
+        <div class="w-full h-[2rem] bg-[#333F] border-b border-skyBlue">
+          <div class="w-full h-[1rem]"></div>
+          <div class="w-full h-[1rem] flex items-end select-none" (mousedown)="OnTimelineRulerMouseDown($event)" #timelineRuler>
+            @for (timeSection of timeSections(); track $index) {
+              <div class="h-[12px] w-full border-r border-skyBlue text-[1rem]">
+                <span class="grid justify-end mt-[-8px] mr-[2px] text-[#FFFA]">
+                  {{timeSection}}
+                </span>
+              </div>
+            }
+          </div>
+        </div>
+      </div>
+      <div class="relative h-full w-full overflow-y-scroll shadow-[inset_0px_0px_4px_0px_#000F] z-0">
+          <div class="w-full h-[4.5rem] pb-[1px] pt-[1px] bg-transparent">
+          </div>
+          <div class="w-full h-[4.5rem] border-t border-dotted border-skyBlue pt-[1px] pb-[1px]">
+          </div>
+          <div [style]="{height: 9+'rem'}" class="absolute flex w-full top-0 left-0 z-[-1]">
+            @for (timeSection of timeSections(); track $index) {
+              <div class="h-full w-full border-r border-skyBlue border-dashed"></div>
+            }
+          </div>
+      </div>
+      <div class="w-full h-full bg-[#333F] z-[2]"></div>
+    </div>
+  </div>  
 </EditorPanel>

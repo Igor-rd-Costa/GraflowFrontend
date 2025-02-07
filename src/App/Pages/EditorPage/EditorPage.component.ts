@@ -8,7 +8,7 @@ import { Timeline } from './Components/Timeline/Timeline.component';
 import { VerticalResizeBar } from './Components/VerticalResizeBar/VerticalResizeBar.component';
 import { HorizontalResizeBar } from './Components/HorizontalResizeBar/HorizontalResizeBar.component';
 import { EditorHeader } from "./Components/EditorHeader/EditorHeader.component";
-import { ProjectService } from '../../Services/ProjectService';
+import { Project, ProjectService } from '../../Services/ProjectService';
 import { LoadProjectPopUp } from './Components/LoadProjectPopUp/LoadProjectPopUp.component';
 import { MenuAction } from './Components/MenuBar/MenuBar.component';
 import { ContextMenu } from "../../Components/ContextMenu/ContextMenu.component";
@@ -49,7 +49,7 @@ export type EditorPanelsInfo = {
 
 function GetDefaultPanelDimensions(): EditorPanelsInfo {
   const width = 283;
-  const height = 200; 
+  const height = 246.4; 
   return {
     outlinerPanel: { 
       size: {w: width, h: 0}, 
@@ -84,6 +84,7 @@ export class EditorPage {
   @ViewChild(ContextMenu) contextMenu!: ContextMenu;
   @ViewChild(View) viewPanel!: View;
   dimension: EditorPanelsInfo = GetDefaultPanelDimensions();
+  loadedProject: Project|null = null;
   static instance: EditorPage;
 
   constructor(private auth: AuthService, private router: Router, private projectService: ProjectService, private actionsService: ActionsService) {
@@ -95,7 +96,7 @@ export class EditorPage {
       EditorPage.instance = this;
       window.addEventListener('resize', this.OnWindowResize.bind(this));
       window.addEventListener('keydown', this.OnWindowKeyDown.bind(this));
-      if (this.projectService.Project() === null) {
+      if (this.projectService.ProjectInfo() === null) {
         let loadedProject = false;
         do {
           this.UnfocusPage();
@@ -103,8 +104,8 @@ export class EditorPage {
         } while (!loadedProject);
         this.FocusPage();
       }
-      await this.viewPanel.Init();
-      this.CallCanvasResize();
+      const proj = this.projectService.Project()!;
+      this.loadedProject = proj;
     });
   }
 
@@ -138,7 +139,7 @@ export class EditorPage {
     
     this.outlineSum = 0;
     this.outlinerCols.set(colCount);
-    this.CallCanvasResize();
+    this.viewPanel.ResizeCanvas();
   }
 
   OnViewPropertiesResize(offset: number) {
@@ -148,7 +149,7 @@ export class EditorPage {
     }
     this.dimension.viewPanel.size.w += offset;
     this.dimension.propertiesPanel.size.w -= offset;
-    this.CallCanvasResize();
+    this.viewPanel.ResizeCanvas();
   }
 
   OnViewTimelineResize(offset: number) {
@@ -158,10 +159,16 @@ export class EditorPage {
     }
     this.dimension.viewPanel.size.h += offset;
     this.dimension.timelinePanel.size.h -= offset;
-    this.CallCanvasResize();
+    this.viewPanel.ResizeCanvas();
   }
 
   OnWindowResize() {
+    if (!this.main) {
+      setTimeout(() => {
+        this.OnWindowResize.bind(this);
+      });
+      return;
+    }
     const paddingW = 32;
     const paddingH = 24;
 
@@ -176,15 +183,6 @@ export class EditorPage {
 
     this.dimension.viewPanel.size.w *= ratioW;
     this.dimension.viewPanel.size.h *= ratioH;
-    this.CallCanvasResize();
-  }
-
-  CallCanvasResize() {
-    const event = new UIEvent('resize');
-    const canvas = this.viewPanel.canvas.nativeElement;
-    canvas.width = canvas.clientWidth * window.devicePixelRatio;
-    canvas.height = canvas.clientHeight * window.devicePixelRatio;
-    canvas.dispatchEvent(event);
   }
 
   async OnMenuSelect(action: MenuAction) {
