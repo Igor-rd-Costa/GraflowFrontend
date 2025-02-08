@@ -30,8 +30,13 @@ export type ProjectAssets = {
   files: ProjectFile[],
 }
 
+export type ProjectTimelineLayer = {
+  entities: []
+}
+
 export type ProjectTimeline = {
   duration: number // in seconds
+  layers: ProjectTimelineLayer[]
 }
 
 export type Project = {info: ProjectInfo|null, assets: ProjectAssets, timeline: ProjectTimeline}
@@ -63,7 +68,8 @@ export class ProjectService {
         folders: []
       },
       timeline: {
-        duration: 0
+        duration: 0,
+        layers: []
       }
     }
     this.projectAssets.set({
@@ -89,11 +95,11 @@ export class ProjectService {
       if (this.projects[i].id === id) {
         this.projectInfo.set({...this.projects[i]});
         this.projectAssets.set({files: [], folders: []});
-        this.projectTimeline.set({duration: 0});
+        this.projectTimeline.set({duration: 0, layers: []});
         this.loadedProject = {
           info: this.projectInfo(),
           assets: {files: [], folders: []},
-          timeline: {duration: 0}
+          timeline: {duration: 0, layers: []}
         };
         sessionStorage.setItem('loadedProject', JSON.stringify(this.projectInfo()));
         return true;
@@ -105,11 +111,11 @@ export class ProjectService {
     }
     this.projectInfo.set(proj);
     this.projectAssets.set({files: [], folders: []});
-    this.projectTimeline.set({duration: 0});
+    this.projectTimeline.set({duration: 0, layers: []});
     this.loadedProject = {
       info: this.projectInfo(),
       assets: {files: [], folders: []},
-      timeline: {duration: 0}
+      timeline: {duration: 0, layers: []}
     };
     sessionStorage.setItem('loadedProject', JSON.stringify(this.projectInfo()));
     return true;

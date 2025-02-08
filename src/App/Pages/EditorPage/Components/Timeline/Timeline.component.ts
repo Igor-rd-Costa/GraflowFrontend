@@ -52,9 +52,31 @@ export class Timeline implements AfterViewInit {
       return `${min < 10 ? '0': ''}${min}:${sec < 10 ? '0' : ''}${sec}`
     });
   });
+  currentTime = computed<string>(() => {
+    const pos = this.timelinePointerPos();
+    const l = this.timeSections().length;
+    if (!this.timelineRuler) {
+      return "00:00";
+    }
+    const w = this.timelineRuler.nativeElement.getBoundingClientRect().width;
+    const timeSec = (pos / (w / l)) * 30;
+    const min = Math.floor(timeSec / 60);
+    const sec = Math.floor(timeSec % 60);
+    return `${min < 10 ? '0' : ''}${min}:${sec < 10 ? '0' : ''}${sec}`;  
+  })
 
   ngAfterViewInit(): void {
     this.timelineHeight.set((this.panel.Element().getBoundingClientRect().height - 32) + 'px');
+  }
+
+  Play() {
+    this.isPlaying.set(true);
+    //TODO implement this
+  }
+
+  Pause() {
+    this.isPlaying.set(false);
+    //TODO implement this
   }
   
   OnTimelineRulerMouseDown(event: MouseEvent) {
@@ -71,10 +93,12 @@ export class Timeline implements AfterViewInit {
       lastPos = x;
       this.timelinePointerPos.set(Math.min(Math.max(this.timelinePointerPos() + offset, 0), this.timelineRuler.nativeElement.getBoundingClientRect().width));
     }).bind(this);
+    
     const onMouseUp = (() => {
       document.removeEventListener('mousemove', onMouseMove);  
       document.removeEventListener('mousemove', onMouseUp);  
     }).bind(this);
+
     document.addEventListener('mousemove', onMouseMove);
     document.addEventListener('mouseup', onMouseUp);
   }
@@ -85,5 +109,15 @@ export class Timeline implements AfterViewInit {
 
   OnPointerMouseLeave() {
     this.timelinePointer.nativeElement.classList.remove('pointer-hovered');
+  }
+
+  GetCurrentTime() {
+    if (this.timelineRuler) {
+      const w = this.timelineRuler.nativeElement.getBoundingClientRect().width;
+      const delta = w / this.timeSections().length;
+      console.log(delta)
+      return "00:00";
+    }
+      return "00:00";
   }
 }
