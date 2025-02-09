@@ -63,7 +63,6 @@ export class OutlinerItem {
   IsInEditMode() { return this.isInRenameMode(); }
 
   protected OnClick(event: MouseEvent) {
-    event.preventDefault();
     if (event.button === 0) {
       this.select.emit(this);
     }

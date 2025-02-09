@@ -1,11 +1,12 @@
-import { AfterViewInit, Component, computed, ElementRef, model, signal, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, computed, effect, ElementRef, model, QueryList, signal, ViewChild, ViewChildren, viewChildren } from '@angular/core';
 import { EditorPanel } from '../EditorPanel/EditorPanel.component';
-import { ProjectTimeline } from '../../../../Services/ProjectService';
+import { ProjectService, ProjectTimeline } from '../../../../Services/ProjectService';
+import { TimelineEntity } from "./Components/TimelineEntity/TimelineEntity.component";
 
 @Component({
   selector: 'Timeline',
   standalone: true,
-  imports: [EditorPanel],
+  imports: [EditorPanel, TimelineEntity],
   templateUrl: './Timeline.component.html',
   styles: `
     #timeline-pointer {
@@ -31,8 +32,11 @@ import { ProjectTimeline } from '../../../../Services/ProjectService';
 export class Timeline implements AfterViewInit {
   @ViewChild('timelineRuler') private timelineRuler!: ElementRef<HTMLElement>;
   @ViewChild('timelinePointer') private timelinePointer!: ElementRef<HTMLElement>;
+  @ViewChild('dropCreatePreview') private dropCreatePreview!: ElementRef<HTMLElement>;
+  @ViewChild('layersWrapper') private layersWrapper!: ElementRef<HTMLElement>;
+  @ViewChildren('layer') private layers!: QueryList<ElementRef<HTMLElement>>;
   @ViewChild(EditorPanel) private panel!: EditorPanel;
-  timeline = model<ProjectTimeline>();
+  timeline = signal<ProjectTimeline|null>(null);
   zoomLevel = signal<number>(1);
   isPlaying = signal<boolean>(false);
   timelinePointerPos = signal<number>(0);
@@ -64,6 +68,13 @@ export class Timeline implements AfterViewInit {
     const sec = Math.floor(timeSec % 60);
     return `${min < 10 ? '0' : ''}${min}:${sec < 10 ? '0' : ''}${sec}`;  
   })
+
+  constructor(private projectService: ProjectService) {
+    effect(() => {
+      const timeline = this.projectService.Timeline();
+      this.timeline.set(timeline);
+    }, {allowSignalWrites: true})
+  }
 
   ngAfterViewInit(): void {
     this.timelineHeight.set((this.panel.Element().getBoundingClientRect().height - 32) + 'px');
@@ -119,5 +130,132 @@ export class Timeline implements AfterViewInit {
       return "00:00";
     }
       return "00:00";
+  }
+
+  OnLayerDragOver(event: DragEvent) {
+    event.preventDefault();
+    if (event.target === null) {
+      return;
+    }
+    const t = event.target as HTMLElement;
+    const wrapper = this.layersWrapper.nativeElement;
+    const preview = this.dropCreatePreview.nativeElement;
+    if (!wrapper || !preview) {
+      return;
+    }
+    const y = ((t.getBoundingClientRect().top) - (wrapper.getBoundingClientRect().top)) + wrapper.scrollTop;
+    let x = (event.clientX) - (wrapper.getBoundingClientRect().x);
+    if ((x + preview.getBoundingClientRect().width) > t.getBoundingClientRect().width) {
+      x = t.getBoundingClientRect().width - preview.getBoundingClientRect().width;
+    }
+    this.ShowDropPreview(x, y);
+  }
+
+  OnPreviewDragOver(event: DragEvent) {
+    event.preventDefault();
+    if (event.target === null) {
+      return;
+    }
+    const t = event.target as HTMLElement;
+    const wrapper = this.layersWrapper.nativeElement;
+    const preview = this.dropCreatePreview.nativeElement;
+    if (!wrapper || !preview) {
+      return;
+    }
+    const topOffset = ((event.clientY) - wrapper.getBoundingClientRect().top) + wrapper.scrollTop;
+    const layerHeight = 4.5 * 16;
+    const layerIndex = Math.floor(topOffset / layerHeight);
+    const layer = this.layers.get(layerIndex)?.nativeElement;
+    if (layer === undefined) {
+      return;
+    }
+    const previewWidth = preview.getBoundingClientRect().width;
+    const y = ((layer.getBoundingClientRect().top + wrapper.scrollTop) - (wrapper.getBoundingClientRect().top));
+    let x = (event.clientX) - (layer.getBoundingClientRect().x);
+    if ((x + previewWidth) > layer.getBoundingClientRect().width) {
+      x = layer.getBoundingClientRect().width - previewWidth;
+    }
+    this.ShowDropPreview(x, y);
+  }
+
+  OnDrop(event: DragEvent, layerIndex: number) {
+    if (!event.target) {
+      this.HideDropPreview();
+      return;
+    }
+    const t = event.target as HTMLElement;
+    const wrapper = this.layersWrapper.nativeElement;
+    if (!wrapper) {
+      return;
+    }
+    const x = (event.clientX) - (wrapper.getBoundingClientRect().left);
+    const start = this.TimeAt(x);
+    this.projectService.AddTimelineEntity(start, start + 30, layerIndex);
+    this.HideDropPreview();
+  }
+
+  OnPreviewDrop(event: DragEvent) {
+    if (!event.target) {
+      this.HideDropPreview();
+      return;
+    }
+    const t = event.target as HTMLElement;
+    const wrapper = this.layersWrapper.nativeElement;
+    if (!wrapper) {
+      return;
+    }
+    
+    const topOffset = ((event.clientY) - wrapper.getBoundingClientRect().top) + wrapper.scrollTop;
+    const layerHeight = 4.5 * 16;
+    const layerIndex = Math.floor(topOffset / layerHeight);
+    const y = (t.getBoundingClientRect().top) - (wrapper.getBoundingClientRect().top);
+    const x = (event.clientX) - (wrapper.getBoundingClientRect().left);
+    const start = this.TimeAt(x);
+    this.projectService.AddTimelineEntity(start, start + 30, layerIndex);
+    this.HideDropPreview();
+  }
+
+  private ShowDropPreview(x: number, y: number) {
+    const preview = this.dropCreatePreview.nativeElement;
+    if (!preview) {
+      return;
+    }
+    preview.style.display = 'block';
+    preview.style.top = `${y + 1}px`;
+    preview.style.left = `${x}px`;
+  }
+
+  private HideDropPreview() {
+    const preview = this.dropCreatePreview.nativeElement;
+    if (!preview) {
+      return;
+    }
+    preview.style.display = 'none';
+    preview.style.top = "";
+    preview.style.left = "";
+  }
+
+  private TimeAt(x: number) {
+    const ruler = this.timelineRuler.nativeElement;
+    const timeline = this.timeline();
+    if (!ruler || !timeline) {
+      return 0;
+    }
+    const w = ruler.getBoundingClientRect().width;
+    const timelineLength = timeline.duration < 300 ? 300 : timeline.duration;
+    const delta = timelineLength / w;
+    return Math.floor(delta * x);
+  }
+
+  protected TimeToPixels(time: number) {
+    const ruler = this.timelineRuler.nativeElement;
+    const timeline = this.timeline();
+    if (!ruler || !timeline) {
+      return 0;
+    }
+    const w = ruler.getBoundingClientRect().width;
+    const timelineLength = timeline.duration < 300 ? 300 : timeline.duration;
+    const delta = w / timelineLength;
+    return Math.floor(delta * time);
   }
 }

@@ -30,8 +30,14 @@ export type ProjectAssets = {
   files: ProjectFile[],
 }
 
+export type ProjectTimelineEntity = {
+  id: string,
+  start: number,
+  end: number,
+}
+
 export type ProjectTimelineLayer = {
-  entities: []
+  entities: ProjectTimelineEntity[]
 }
 
 export type ProjectTimeline = {
@@ -49,7 +55,6 @@ export type ProjectCreateInfo = {
 export class ProjectService {
   private address = App.Backend()+"project/";
   private projects: ProjectInfo[] = [];
-  private loadedProject: Project|null = null;
   private projectInfo = signal<ProjectInfo|null>(null);
   private projectAssets = signal<ProjectAssets|null>(null);
   private projectTimeline = signal<ProjectTimeline|null>(null);
@@ -59,27 +64,14 @@ export class ProjectService {
     if (loadedProject === null) {
       return;
     }
-    const proj: ProjectInfo = JSON.parse(loadedProject);
-    this.projectInfo.set(proj);
-    this.loadedProject = {
-      info: proj,
-      assets: {
-        files: [],
-        folders: []
-      },
-      timeline: {
-        duration: 0,
-        layers: []
-      }
-    }
-    this.projectAssets.set({
-      folders: [],
-      files: []
-    });
+    const proj: Project = JSON.parse(loadedProject);
+    this.projectInfo.set(proj.info);
+    this.projectAssets.set(proj.assets);
+    this.projectTimeline.set(proj.timeline);
   }
 
-  Project():Project|null {
-    return this.loadedProject;
+  Project():ProjectInfo|null {
+    return this.projectInfo();
   }
 
   ProjectInfo(): ProjectInfo|null {
@@ -90,34 +82,38 @@ export class ProjectService {
     return this.projectAssets();
   }
 
+  Timeline() {
+    return this.projectTimeline();
+  }
+
   async LoadProject(id: string): Promise<boolean> {
     for (let i = 0; i < this.projects.length; i++) {
       if (this.projects[i].id === id) {
         this.projectInfo.set({...this.projects[i]});
         this.projectAssets.set({files: [], folders: []});
         this.projectTimeline.set({duration: 0, layers: []});
-        this.loadedProject = {
+        const proj: Project = {
           info: this.projectInfo(),
-          assets: {files: [], folders: []},
-          timeline: {duration: 0, layers: []}
+          assets: this.projectAssets()!,
+          timeline: this.projectTimeline()!,
         };
-        sessionStorage.setItem('loadedProject', JSON.stringify(this.projectInfo()));
+        sessionStorage.setItem('loadedProject', JSON.stringify(proj));
         return true;
       }
     }
-    const proj = await this.GetProject(id);
-    if (proj === null) {
+    const project = await this.GetProject(id);
+    if (project === null) {
       return false;
     }
-    this.projectInfo.set(proj);
+    this.projectInfo.set(project);
     this.projectAssets.set({files: [], folders: []});
     this.projectTimeline.set({duration: 0, layers: []});
-    this.loadedProject = {
+    const proj: Project = {
       info: this.projectInfo(),
-      assets: {files: [], folders: []},
-      timeline: {duration: 0, layers: []}
+      assets: this.projectAssets()!,
+      timeline: this.projectTimeline()!,
     };
-    sessionStorage.setItem('loadedProject', JSON.stringify(this.projectInfo()));
+    sessionStorage.setItem('loadedProject', JSON.stringify(proj));
     return true;
   }
 
@@ -378,5 +374,38 @@ export class ProjectService {
       }
     }
     return false;
-  } 
+  }
+
+  AddTimelineEntity(start: number, end: number, layerIndex: number) {
+    const timeline = this.projectTimeline();
+    if (!timeline) {
+      return;
+    }
+    const id = v4();
+    if (layerIndex === 0 || timeline.layers.length === 0) {
+      const layer: ProjectTimelineLayer = {
+        entities: [{
+          id: id,
+          start: start,
+          end: end
+        }]
+      };
+      const layers = [layer, ...timeline.layers];
+      this.projectTimeline.set({
+        duration: timeline.duration,
+        layers: layers
+      });
+      return;
+    }
+    const layers = timeline.layers;
+    layers[layerIndex - 1].entities.push({
+      id: id,
+      start: start,
+      end: end
+    });
+    this.projectTimeline.set({
+      duration: timeline.duration,
+      layers: layers
+    });
+  }
 }

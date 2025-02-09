@@ -8,7 +8,7 @@ import { Timeline } from './Components/Timeline/Timeline.component';
 import { VerticalResizeBar } from './Components/VerticalResizeBar/VerticalResizeBar.component';
 import { HorizontalResizeBar } from './Components/HorizontalResizeBar/HorizontalResizeBar.component';
 import { EditorHeader } from "./Components/EditorHeader/EditorHeader.component";
-import { Project, ProjectService } from '../../Services/ProjectService';
+import { Project, ProjectService, ProjectTimeline } from '../../Services/ProjectService';
 import { LoadProjectPopUp } from './Components/LoadProjectPopUp/LoadProjectPopUp.component';
 import { MenuAction } from './Components/MenuBar/MenuBar.component';
 import { ContextMenu } from "../../Components/ContextMenu/ContextMenu.component";
@@ -83,8 +83,9 @@ export class EditorPage {
   @ViewChild(LoadProjectPopUp) loadProjectPopUp!: LoadProjectPopUp;
   @ViewChild(ContextMenu) contextMenu!: ContextMenu;
   @ViewChild(View) viewPanel!: View;
+  protected projectTimeline = signal<ProjectTimeline|null>(null);
   dimension: EditorPanelsInfo = GetDefaultPanelDimensions();
-  loadedProject: Project|null = null;
+  
   static instance: EditorPage;
 
   constructor(private auth: AuthService, private router: Router, private projectService: ProjectService, private actionsService: ActionsService) {
@@ -104,8 +105,6 @@ export class EditorPage {
         } while (!loadedProject);
         this.FocusPage();
       }
-      const proj = this.projectService.Project()!;
-      this.loadedProject = proj;
     });
   }
 

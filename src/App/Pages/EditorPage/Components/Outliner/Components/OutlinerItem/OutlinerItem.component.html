@@ -1,6 +1,6 @@
 <div class="w-[83px] h-[83px] text-center leading-4 hover:bg-[#B6D3FD22] cursor-pointer select-none 
 border border-transparent text-[0.9rem] grid justify-items-center items-center break-all outline-none"
-(contextmenu)="PreventCM($event)" (mousedown)="OnClick($event)" tabindex="-1" #item>
+(contextmenu)="PreventCM($event)" (mousedown)="OnClick($event)" tabindex="-1" [draggable]="type !== 'folder'" #item>
   <div class="text-[2.8rem] w-[2.8rem] h-[2.8rem] flex justify-center">
     <span class="material-symbols-outlined h-[2.8rem] w-[2.8rem]">
       @switch (type) {
