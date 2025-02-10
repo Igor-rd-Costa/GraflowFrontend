@@ -32,6 +32,13 @@ export class Outliner {
       this.projectFolders = files.folders.filter(f => f.parentId === pId) ?? [];
       this.projectFiles = files.files.filter(f => f.parentId === pId) ?? [];
     });
+    document.addEventListener('mousedown', (event: MouseEvent) => {
+      const t = event.target as HTMLElement;
+      if (event.button === 0 && this.selectedItem && !this.selectedItem.Element().contains(t)) {
+        this.selectedItem.UnSelect();
+        this.selectedItem = null;
+      }
+    });
   }
 
   GetFolderPathString() {
@@ -105,28 +112,30 @@ export class Outliner {
   }
 
   OnMouseDown(event: MouseEvent) {
-    this.outliner.nativeElement.focus();
+    if (event.button !== 2) {
+      return;
+    }
+    event.stopPropagation();
     for (let i = 0; i < this.items.length; i++) {
       const item = this.items.get(i)!;
       if (item.Element().contains(event.target as HTMLElement)) {
-        if (event.button === 2) {
-          event.stopPropagation();
-          EditorPage.ContextMenu().Show([
-            {heading: 'Delete', callback: this.DeleteFolderCallback(item.id, item.type), closeOnCallback: true },
-            {heading: 'Rename', callback: this.RenameItemCallback(item.id), closeOnCallback: true }
-          ], event.clientX, event.clientY);
+        if (this.selectedItem?.id !== item.id) {
+          this.selectedItem?.UnSelect();
+          this.selectedItem = item;
+          this.selectedItem.Select();
         }
+        EditorPage.ContextMenu().Show([
+          {heading: 'Delete', callback: this.DeleteFolderCallback(item.id, item.type), closeOnCallback: true },
+          {heading: 'Rename', callback: this.RenameItemCallback(item.id), closeOnCallback: true }
+        ], event.clientX, event.clientY);
         return;
       }
     }
-    this.selectedItem?.UnSelect();
-    if (event.button === 2) {
-      event.stopPropagation();
-      EditorPage.ContextMenu().Show([
-        {heading: 'Import File', callback: this.ImportFileCallback.bind(this), closeOnCallback: true},
-        {heading: 'Create Folder', callback: this.CreateFolderCallback.bind(this), closeOnCallback: true},
-      ], event.clientX, event.clientY);
-    }
+    EditorPage.ContextMenu().Show([
+      {heading: 'Import File', callback: this.ImportFileCallback.bind(this), closeOnCallback: true},
+      {heading: 'Create Folder', callback: this.CreateFolderCallback.bind(this), closeOnCallback: true},
+    ], event.clientX, event.clientY);
+  
   }
 
   CreateFolderCallback() {
