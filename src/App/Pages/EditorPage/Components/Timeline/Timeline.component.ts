@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, computed, effect, ElementRef, model, QueryList, signal, ViewChild, ViewChildren, viewChildren } from '@angular/core';
+import { AfterViewInit, Component, computed, effect, ElementRef, QueryList, signal, ViewChild, ViewChildren } from '@angular/core';
 import { EditorPanel } from '../EditorPanel/EditorPanel.component';
 import { ProjectService, ProjectTimeline } from '../../../../Services/ProjectService';
 import { TimelineEntity } from "./Components/TimelineEntity/TimelineEntity.component";
@@ -35,7 +35,9 @@ export class Timeline implements AfterViewInit {
   @ViewChild('dropCreatePreview') private dropCreatePreview!: ElementRef<HTMLElement>;
   @ViewChild('layersWrapper') private layersWrapper!: ElementRef<HTMLElement>;
   @ViewChildren('layer') private layers!: QueryList<ElementRef<HTMLElement>>;
+  @ViewChildren(TimelineEntity) private timelineEntities!: QueryList<TimelineEntity>;
   @ViewChild(EditorPanel) private panel!: EditorPanel;
+  selectedEntity: string|null = null;
   timeline = signal<ProjectTimeline|null>(null);
   zoomLevel = signal<number>(1);
   isPlaying = signal<boolean>(false);
@@ -78,6 +80,16 @@ export class Timeline implements AfterViewInit {
 
   ngAfterViewInit(): void {
     this.timelineHeight.set((this.panel.Element().getBoundingClientRect().height - 32) + 'px');
+    document.addEventListener('click', (event: MouseEvent) => {
+      if (this.selectedEntity) {
+        const entity = this.GetTimelineEntity(this.selectedEntity)
+        if (!entity || entity.Element().contains(event.target as HTMLElement)) {
+          return;
+        }
+        entity.UnSelect();
+        this.selectedEntity = null;
+      }
+    });
   }
 
   Play() {
@@ -213,6 +225,30 @@ export class Timeline implements AfterViewInit {
     const start = this.TimeAt(x);
     this.projectService.AddTimelineEntity(start, start + 30, layerIndex);
     this.HideDropPreview();
+  }
+
+  protected SelectEntity(entityId: string) {
+    if (entityId === this.selectedEntity) {
+      return;
+    }
+    const entity = this.GetTimelineEntity(entityId);
+    if (!entity) {
+      return;
+    }
+    if (this.selectedEntity) {
+      this.GetTimelineEntity(this.selectedEntity)?.UnSelect();
+    }
+    this.selectedEntity = entityId;
+    entity.Select();
+  }
+
+  private GetTimelineEntity(entityId: string) {
+    for (let i = 0; i < this.timelineEntities.length; i++) {
+      if (this.timelineEntities.get(i)!.id === entityId) {
+        return this.timelineEntities.get(i)!;
+      }
+    }
+    return null;
   }
 
   private ShowDropPreview(x: number, y: number) {

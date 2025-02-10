@@ -60,7 +60,8 @@
               <div class="relative w-full h-[4.5rem] flex border-t border-dotted border-skyBlue pt-[1px] pb-[1px]" 
               dropzone="true" (drop)="OnDrop($event, $index + 1)" (dragover)="OnLayerDragOver($event)" #layer>
                 @for (entity of layer.entities; track $index) {
-                  <TimelineEntity [id]="entity.id" [left]="TimeToPixels(entity.start)" [width]="TimeToPixels(entity.end - entity.start)"/>
+                  <TimelineEntity [id]="entity.id" [left]="TimeToPixels(entity.start)" [width]="TimeToPixels(entity.end - entity.start)"
+                  (mousedown)="SelectEntity(entity.id)"/>
                 }
               </div>
             }
