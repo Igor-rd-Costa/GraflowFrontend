@@ -37,6 +37,7 @@ export type ProjectTimelineEntity = {
 }
 
 export type ProjectTimelineLayer = {
+  position: number,
   entities: ProjectTimelineEntity[]
 }
 
@@ -384,6 +385,7 @@ export class ProjectService {
     const id = v4();
     if (layerIndex === 0 || timeline.layers.length === 0) {
       const layer: ProjectTimelineLayer = {
+        position: timeline.layers.length,
         entities: [{
           id: id,
           start: start,

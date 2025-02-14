@@ -1,0 +1,8 @@
+<div class="relative w-full h-[4.5rem] flex border-t border-dotted border-skyBlue pt-[1px] pb-[1px]" #wrapper>
+@if (layer() !== null) {
+  @for (entity of layer()!.entities; track $index) {
+    <TimelineEntity [entity]="entity"/>
+    <!--  [left]="TimeToPixels(entity.start)" [width]="TimeToPixels(entity.end - entity.start)" -->
+  }
+}
+</div>

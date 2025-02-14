@@ -1,0 +1,10 @@
+<div id="timeline-pointer" [style]="{left: (pos() - 6)+'px'}" 
+class="w-[12px] h-full grid grid-rows-[12px_1fr] justify-items-center absolute top-[20px] z-[1] pointer-events-none" 
+#pointer>
+  <div class="w-[12px] h-[12px]" (mouseenter)="OnMouseEnter()" (mouseleave)="OnMouseLeave()" (mousedown)="OnMouseDown($event)">
+    <svg class="pointer-events-auto" width="12" height="12">
+      <polygon points="0,0 12,0 6,12"></polygon>
+    </svg>
+  </div>
+  <div class="h-full w-[1px] relative pointer-events-none"></div>
+</div>

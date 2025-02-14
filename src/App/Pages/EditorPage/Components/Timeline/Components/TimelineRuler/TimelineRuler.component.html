@@ -1,0 +1,15 @@
+<div [style]="{minWidth: (timeSections().length * 8)+'rem'}" class="w-full h-full bg-[#2C2C2CFF]">
+  <div class="w-full h-[2rem] bg-[#333F] border-b border-skyBlue">
+    <div class="w-full h-[1rem]"></div>
+    <div class="w-full h-[1rem] flex items-end select-none" (mousedown)="OnMouseDown($event)" #ruler>
+      <TimelinePointer/>
+      @for (timeSection of timeSections(); track $index) {
+        <div class="h-[12px] w-full border-r border-skyBlue text-[1rem]">
+          <span class="grid justify-end mt-[-8px] mr-[2px] text-[#FFFA]">
+            {{timeSection}}
+          </span>
+        </div>
+      }
+    </div>
+  </div>
+</div>

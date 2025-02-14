@@ -1,3 +1,5 @@
-<div [style]="{left: left+'px', width: width+'px'}" class="absolute h-full bg-[#999F] text-dark p-1 cursor-pointer border-2 border-transparent shadow-card" #entity>
+<div [style]="{left: left+'px', width: width+'px'}" class="absolute cursor-pointer h-full bg-[#999F] text-dark p-1 select-none
+cursor-pointer border-2 border-transparent shadow-card min-w-[20px] hover:bg-[#AAAF]"
+(mousemove)="OnMouseMove($event)" (mousedown)="OnMouseDown($event)" #entity>
   New Entity
 </div>
